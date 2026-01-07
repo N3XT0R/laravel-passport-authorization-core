@@ -42,15 +42,15 @@ final class CleanupDatabaseCommandTest extends DatabaseTestCase
             'action_id' => $action->getKey(),
         ]);
 
-        $this->artisan('filament-passport-ui:cleanup-database')
+        $this->artisan('laravel-passport-authorization-core:cleanup-database')
             ->assertExitCode(Command::SUCCESS);
 
-        self::assertDatabaseMissing('passport_scope_grants', [
+        $this->assertDatabaseMissing('passport_scope_grants', [
             'tokenable_id' => 999999,
             'tokenable_type' => User::class,
         ]);
 
-        self::assertDatabaseHas('passport_scope_grants', [
+        $this->assertDatabaseHas('passport_scope_grants', [
             'tokenable_id' => $owner->getKey(),
             'tokenable_type' => $owner->getMorphClass(),
         ]);

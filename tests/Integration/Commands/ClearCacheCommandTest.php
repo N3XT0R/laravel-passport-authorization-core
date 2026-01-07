@@ -61,7 +61,7 @@ final class ClearCacheCommandTest extends DatabaseTestCase
             ])->get('action-cache-key')
         );
 
-        $this->artisan('filament-passport-ui:cleanup-cache')
+        $this->artisan('laravel-passport-authorization-core:cleanup-cache')
             ->assertExitCode(Command::SUCCESS);
 
         self::assertNull(
