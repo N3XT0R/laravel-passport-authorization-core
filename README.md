@@ -133,7 +133,7 @@ It acts as the **authorization backbone**, not the presentation layer.
 
 - PHP ^8.4
 - Laravel ^12
-- Laravel Passport
+- Laravel Passport ^13
 
 ---
 
