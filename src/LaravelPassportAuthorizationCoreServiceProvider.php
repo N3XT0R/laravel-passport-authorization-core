@@ -2,8 +2,11 @@
 
 namespace N3XT0R\LaravelPassportAuthorizationCore;
 
+use Illuminate\Support\Facades\Artisan;
 use N3XT0R\LaravelPassportAuthorizationCore\Commands\CleanupDatabaseCommand;
 use N3XT0R\LaravelPassportAuthorizationCore\Commands\ClearCacheCommand;
+use N3XT0R\LaravelPassportAuthorizationCore\Database\Seeders\DatabaseSeeder;
+use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -34,7 +37,27 @@ class LaravelPassportAuthorizationCoreServiceProvider extends PackageServiceProv
             ->name('laravel-passport-authorization-core')
             ->hasConfigFile()
             ->hasMigrations($this->getMigrations())
-            ->hasCommands($this->getCommands());
+            ->hasCommands($this->getCommands())
+            ->hasInstallCommand(function (InstallCommand $command) {
+                $command
+                    ->publishConfigFile()
+                    ->publishMigrations()
+                    ->askToRunMigrations()
+                    ->endWith(function (InstallCommand $command) {
+                        if (!$command->confirm(
+                            question: 'Do you want to seed default Passport scope resources and actions?',
+                            default: false
+                        )) {
+                            return;
+                        }
+
+                        $command->comment('Seeding default Passport scope resources and actions...');
+                        Artisan::call('db:seed', [
+                            '--class' => DatabaseSeeder::class,
+                        ]);
+                    })
+                    ->askToStarRepoOnGitHub('n3xt0r/laravel-passport-authorization-core');
+            });
     }
 
     private function getCommands(): array
