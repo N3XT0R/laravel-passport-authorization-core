@@ -20,7 +20,7 @@ abstract class BaseCachedRepositoryDecorator implements ClearsCacheContract
     protected function ttl(): int
     {
         return (int)config(
-            'passport-ui.cache.ttl',
+            'passport-authorization-core.cache.ttl',
             3600
         );
     }

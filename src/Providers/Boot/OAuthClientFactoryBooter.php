@@ -19,7 +19,7 @@ class OAuthClientFactoryBooter extends BaseBooter
     {
         $this->app->singleton(OAuthClientFactoryInterface::class, function ($app) {
             $allowedTypeValues = config(
-                'passport-ui.oauth.allowed_grant_types',
+                'passport-authorization-core.oauth.allowed_grant_types',
                 []
             );
 
@@ -28,7 +28,7 @@ class OAuthClientFactoryBooter extends BaseBooter
                 $allowedTypeValues
             );
 
-            $strategies = collect($app->tagged('filament-passport-ui.oauth.strategies'))
+            $strategies = collect($app->tagged('passport-authorization-core.oauth.strategies'))
                 ->filter(function (OAuthClientCreationStrategyInterface $strategy) use ($allowedTypes) {
                     return array_any($allowedTypes, fn(OAuthClientType $type): bool => $strategy->supports($type));
                 })
@@ -36,7 +36,7 @@ class OAuthClientFactoryBooter extends BaseBooter
 
             if ($strategies->isEmpty()) {
                 throw new \RuntimeException(
-                    'No OAuth client strategies enabled. Check filament-passport-ui.oauth.allowed_grant_types.'
+                    'No OAuth client strategies enabled. Check passport-authorization-core.oauth.allowed_grant_types.'
                 );
             }
 

@@ -14,7 +14,7 @@ use N3XT0R\LaravelPassportAuthorizationCore\Enum\OAuthClientType;
  */
 readonly class ConfigRepository
 {
-    private const string CONFIG_ROOT = 'passport-ui.';
+    private const string CONFIG_ROOT = 'passport-authorization-core.';
 
 
     public function __construct(private Repository $config)

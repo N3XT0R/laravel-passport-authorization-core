@@ -63,7 +63,7 @@ class RepositoryRegistrar extends BaseRegistrar
     ): object {
         $repository = $app->make($repositoryClass);
 
-        $useCache = $params['cache'] ?? (bool)config('passport-ui.cache.enabled', false);
+        $useCache = $params['cache'] ?? (bool)config('passport-authorization-core.cache.enabled', false);
 
         if (
             !$useCache

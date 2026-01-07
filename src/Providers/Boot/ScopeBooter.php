@@ -25,7 +25,7 @@ readonly class ScopeBooter implements BooterInterface
 
     public function boot(): void
     {
-        if (!config('passport-ui.use_database_scopes', false)) {
+        if (!config('passport-authorization-core.use_database_scopes', false)) {
             return;
         }
 

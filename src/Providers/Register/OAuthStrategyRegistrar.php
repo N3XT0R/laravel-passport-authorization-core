@@ -25,6 +25,6 @@ class OAuthStrategyRegistrar extends BaseRegistrar
             ImplicitGrantClientStrategy::class,
             AuthorizationCodeClientStrategy::class,
             DeviceGrantClientStrategy::class,
-        ], 'filament-passport-ui.oauth.strategies');
+        ], 'passport-authorization-core.oauth.strategies');
     }
 }
