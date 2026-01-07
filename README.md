@@ -1,84 +1,196 @@
-# This is my package laravel-passport-authorization-core
+# Laravel Passport Authorization Core
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/n3xt0r/laravel-passport-authorization-core.svg?style=flat-square)](https://packagist.org/packages/n3xt0r/laravel-passport-authorization-core)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/n3xt0r/laravel-passport-authorization-core/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/n3xt0r/laravel-passport-authorization-core/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/n3xt0r/laravel-passport-authorization-core/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/n3xt0r/laravel-passport-authorization-core/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/n3xt0r/laravel-passport-authorization-core.svg?style=flat-square)](https://packagist.org/packages/n3xt0r/laravel-passport-authorization-core)
+![Framework Agnostic Domain Layer](https://img.shields.io/badge/architecture-domain--core-blue?style=flat-square)
+![OAuth2 / Passport Compatible](https://img.shields.io/badge/oauth2-laravel%20passport-blue?style=flat-square)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+---
 
-## Support us
+## Overview
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/laravel-passport-authorization-core.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/laravel-passport-authorization-core)
+**Laravel Passport Authorization Core** provides a **domain-oriented authorization model** on top of **Laravel Passport
+**.
 
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
+It defines **structured concepts** for scopes, permissions, grants, and authorization context **without any UI, admin
+panel, or framework-specific assumptions** beyond Laravel itself.
 
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+This package is intended to serve as a **reusable foundation** for:
+
+- administrative UIs (e.g. Filament, custom dashboards)
+- API-level authorization enforcement
+- policy-driven access control
+- audit-aware security architectures
+
+It does **not** implement OAuth flows and does **not** replace Passport.  
+Passport remains the runtime authority for token issuance and validation.
+
+---
+
+## What this package does
+
+This package introduces a **formal domain layer** for Passport-based authorization:
+
+- Defines a **structured scope model** (instead of free-form strings)
+- Encapsulates authorization intent as **resource + action**
+- Provides reusable logic for reasoning about permissions and grants
+- Centralizes authorization-related domain rules
+- Exposes a stable API for UI layers and enforcement layers alike
+
+All logic operates **above Passport**, never inside it.
+
+---
+
+## Core Concepts
+
+### Structured Scopes
+
+Instead of treating scopes as arbitrary strings, this package models them explicitly:
+
+- Scopes represent **intent**, not implementation
+- Typical structure:  
+  `resource.action` (e.g. `users.read`, `orders.write`)
+- Enables:
+    - consistent naming
+    - reasoning about permissions
+    - grouping and documentation
+    - safer long-term evolution
+
+### Authorization Context
+
+Authorization is modeled as a **contextual decision**, not a hardcoded rule:
+
+- Which client?
+- Which grant type?
+- Which scopes?
+- Which actor (user / machine)?
+- Which resource and action?
+
+This context can be:
+
+- inspected
+- logged
+- audited
+- reused across UI and runtime enforcement
+
+### Passport Compatibility
+
+- Uses Passport’s existing tables and models
+- Does not alter token issuance, validation, or guards
+- Works with default or custom Passport models
+- Can be adopted incrementally
+
+---
+
+## What this package does *not* do
+
+- ❌ No OAuth flow implementation
+- ❌ No token issuance logic
+- ❌ No UI or admin panel
+- ❌ No policy enforcement by itself
+- ❌ No assumptions about application architecture
+
+This package **defines structure and intent** — enforcement remains the responsibility of the application.
+
+---
+
+## Why this exists
+
+Laravel Passport deliberately avoids opinions about **authorization modeling** and **governance**.
+
+In larger or long-lived systems this often leads to:
+
+- Scopes as undocumented strings
+- No shared understanding of permissions
+- UI layers re-implementing domain logic
+- Authorization rules scattered across policies, middleware, and services
+
+**Laravel Passport Authorization Core** provides a **single, explicit domain model** that can be reused everywhere.
+
+It enables:
+
+- a shared mental model across teams
+- clearer security reviews
+- safer refactoring
+- UI and runtime layers built on the same foundation
+
+---
+
+## Typical Usage
+
+This package is designed to be consumed by:
+
+- admin interfaces (e.g. Filament Passport UI)
+- API gateways
+- policy layers
+- background services
+- audit and compliance tooling
+
+It acts as the **authorization backbone**, not the presentation layer.
+
+---
+
+## Requirements
+
+- PHP ^8.4
+- Laravel ^12
+- Laravel Passport
+
+---
 
 ## Installation
-
-You can install the package via composer:
 
 ```bash
 composer require n3xt0r/laravel-passport-authorization-core
 ```
 
-You can publish and run the migrations with:
+Publish configuration if needed:
 
 ```bash
-php artisan vendor:publish --tag="laravel-passport-authorization-core-migrations"
-php artisan migrate
+php artisan vendor:publish --tag=passport-authorization-core-config
 ```
 
-You can publish the config file with:
+---
 
-```bash
-php artisan vendor:publish --tag="laravel-passport-authorization-core-config"
-```
+## Configuration & Extensibility
 
-This is the contents of the published config file:
+- Supports default and custom Passport models
+- Designed for extension via:
+    - custom scope providers
+    - domain services
+    - application-specific authorization rules
+- No hard coupling to a specific UI or workflow
 
-```php
-return [
-];
-```
+---
 
-Optionally, you can publish the views using
+## Audit & Compliance Considerations
 
-```bash
-php artisan vendor:publish --tag="laravel-passport-authorization-core-views"
-```
+This package is **audit-friendly by design**:
 
-## Usage
+- Explicit authorization concepts
+- Clear separation of concerns
+- Deterministic permission modeling
 
-```php
-$laravelPassportAuthorizationCore = new N3XT0R\LaravelPassportAuthorizationCore();
-echo $laravelPassportAuthorizationCore->echoPhrase('Hello, N3XT0R!');
-```
+It can be combined with logging or audit libraries (e.g. activity logging) but does not enforce a specific solution.
 
-## Testing
+> Note: Compliance certifications apply to organizations and processes.  
+> This package supports auditability but does not constitute compliance by itself.
 
-```bash
-composer test
-```
+---
 
-## Changelog
+## Relationship to Filament Passport UI
 
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+This package serves as the **domain core** for:
 
-## Contributing
+https://github.com/N3XT0R/filament-passport-ui
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+- All non-UI authorization logic lives here
+- Filament Passport UI focuses purely on administration and presentation
+- Both packages evolve independently with a stable boundary
 
-## Security Vulnerabilities
+---
 
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
+## Status
 
-## Credits
+This package is under active development and considered **foundational infrastructure**.
 
-- [Ilya Beliaev](https://github.com/N3XT0R)
-- [All Contributors](../../contributors)
-
-## License
-
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+Architectural discussion, feedback, and contributions are welcome.
