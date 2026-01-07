@@ -13,7 +13,7 @@ dont-discover:
 
 
 workbench:
-  start: '/admin/'
+  start: '/'
   install: true
   health: false
   discovers:
