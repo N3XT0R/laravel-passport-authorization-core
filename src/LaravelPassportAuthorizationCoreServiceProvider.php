@@ -76,4 +76,34 @@ class LaravelPassportAuthorizationCoreServiceProvider extends PackageServiceProv
             'create_passport_scope_grant_table',
         ];
     }
+
+    public function packageRegistered(): void
+    {
+        $this->executeRegistrars();
+    }
+
+    private function executeRegistrars(): void
+    {
+        foreach ($this->registrars as $registrar) {
+            $registrarInstance = app($registrar);
+            if ($registrarInstance instanceof Providers\Register\Concerns\RegistrarInterface) {
+                $registrarInstance->register();
+            }
+        }
+    }
+
+    public function packageBooted(): void
+    {
+        $this->executeBooter();
+    }
+
+    private function executeBooter(): void
+    {
+        foreach ($this->booter as $booterClass) {
+            $booter = app($booterClass);
+            if ($booter instanceof Providers\Boot\Concerns\BooterInterface) {
+                $booter->boot();
+            }
+        }
+    }
 }
