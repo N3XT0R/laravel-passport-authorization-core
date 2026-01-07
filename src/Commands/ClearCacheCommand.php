@@ -9,9 +9,9 @@ use N3XT0R\LaravelPassportAuthorizationCore\Application\UseCases\Cleanup\ClearCa
 
 class ClearCacheCommand extends Command
 {
-    protected $signature = 'filament-passport-ui:cleanup-cache';
+    protected $signature = 'laravel-passport-authorization-core:cleanup-cache';
 
-    protected $description = 'Clears the Filament Passport UI cache, including scope registry cache.';
+    protected $description = 'Clears the cache, including scope registry cache.';
 
     public function handle(ClearCacheUseCase $clearCacheUseCase): int
     {

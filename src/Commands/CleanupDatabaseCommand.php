@@ -9,7 +9,7 @@ use N3XT0R\LaravelPassportAuthorizationCore\Application\UseCases\Cleanup\CleanUp
 
 class CleanupDatabaseCommand extends Command
 {
-    protected $signature = 'filament-passport-ui:cleanup-database';
+    protected $signature = 'laravel-passport-authorization-core:cleanup-database';
 
     protected $description = 'Cleans up obsolete data from the Filament Passport UI database.';
 
