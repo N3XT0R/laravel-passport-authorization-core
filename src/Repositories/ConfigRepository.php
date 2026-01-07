@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace N3XT0R\LaravelPassportAuthorizationCore\Repositories;
 
-use Filament\Support\Contracts\ScalableIcon;
-use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\Config\Repository;
 use N3XT0R\LaravelPassportAuthorizationCore\Enum\OAuthClientType;
 

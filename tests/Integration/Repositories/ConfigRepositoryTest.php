@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace N3XT0R\LaravelPassportAuthorizationCore\Tests\Integration\Repositories;
 
-use Filament\Support\Icons\Heroicon;
 use N3XT0R\LaravelPassportAuthorizationCore\Enum\OAuthClientType;
 use N3XT0R\LaravelPassportAuthorizationCore\Repositories\ConfigRepository;
 use N3XT0R\LaravelPassportAuthorizationCore\Tests\DatabaseTestCase;
