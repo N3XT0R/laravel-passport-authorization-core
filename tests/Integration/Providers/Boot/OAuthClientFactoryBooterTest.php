@@ -33,7 +33,7 @@ final class OAuthClientFactoryBooterTest extends TestCase
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(
-            'No OAuth client strategies enabled. Check filament-passport-authorization-core.oauth.allowed_grant_types.'
+            'No OAuth client strategies enabled. Check passport-authorization-core.oauth.allowed_grant_types.'
         );
 
         $this->app->make(OAuthClientFactoryInterface::class);
