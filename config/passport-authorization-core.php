@@ -1,6 +1,7 @@
 <?php
 
-// config for N3XT0R/LaravelPassportAuthorizationCore
+declare(strict_types=1);
 return [
 
 ];
+
