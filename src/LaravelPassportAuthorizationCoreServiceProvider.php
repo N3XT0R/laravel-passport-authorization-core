@@ -2,9 +2,9 @@
 
 namespace N3XT0R\LaravelPassportAuthorizationCore;
 
+use N3XT0R\LaravelPassportAuthorizationCore\Commands\LaravelPassportAuthorizationCoreCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use N3XT0R\LaravelPassportAuthorizationCore\Commands\LaravelPassportAuthorizationCoreCommand;
 
 class LaravelPassportAuthorizationCoreServiceProvider extends PackageServiceProvider
 {
@@ -19,7 +19,7 @@ class LaravelPassportAuthorizationCoreServiceProvider extends PackageServiceProv
             ->name('laravel-passport-authorization-core')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_laravel_passport_authorization_core_table')
-            ->hasCommand(LaravelPassportAuthorizationCoreCommand::class);
+            ->hasMigration('create_laravel_passport_authorization_core_table');
+        //->hasCommand(LaravelPassportAuthorizationCoreCommand::class);
     }
 }

@@ -19,7 +19,8 @@
     "require": {
         "php": "^8.4",
         "spatie/laravel-package-tools": "^1.16",
-        "illuminate/contracts": "^12.0"
+        "illuminate/contracts": "^12.0",
+        "laravel/passport": "^13.0"
     },
     "require-dev": {
         "laravel/pint": "^1.14",
@@ -51,6 +52,7 @@
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
+            "php-http/discovery": true,
             "phpstan/extension-installer": true
         }
     },
@@ -62,7 +64,7 @@
         }
     },
     "suggest": {
-       "n3xt0r/laravel-passport-modern-scopes": "Enhance scope management with modern features."
+        "n3xt0r/laravel-passport-modern-scopes": "Enhance scope management with modern features."
     },
     "minimum-stability": "dev",
     "prefer-stable": true
