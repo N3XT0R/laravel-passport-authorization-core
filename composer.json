@@ -2,9 +2,13 @@
     "name": "n3xt0r/laravel-passport-authorization-core",
     "description": "This is my package laravel-passport-authorization-core",
     "keywords": [
-        "Ilya Beliaev",
         "laravel",
-        "laravel-passport-authorization-core"
+        "passport",
+        "oauth2",
+        "authorization",
+        "domain-driven-design",
+        "authorization-core",
+        "security"
     ],
     "homepage": "https://github.com/n3xt0r/laravel-passport-authorization-core",
     "license": "MIT",
