@@ -50,6 +50,23 @@ Use cases are designed to:
 - be safely callable from controllers, policies, jobs, or CLIs
 
 There is no supported API outside of these use cases.
+---
+
+## Usecase Overview
+
+For a structured overview of all available application use cases provided by this package, see:
+
+- **[Usecase Overview](usecases/index.md)**
+
+This section documents each use case individually, including:
+
+- its purpose and intent
+- the authorization concern it addresses
+- expected inputs and outputs
+- typical integration scenarios
+
+The overview serves as the primary entry point when integrating the package into an application and should be consulted
+before interacting with individual use cases.
 
 ---
 
@@ -134,3 +151,4 @@ To use **Laravel Passport Authorization Core** correctly:
 4. Let the core define intent — not behavior
 
 This ensures long-term stability, clarity, and architectural integrity.
+
