@@ -38,7 +38,9 @@
     "autoload-dev": {
         "psr-4": {
             "N3XT0R\\LaravelPassportAuthorizationCore\\Tests\\": "tests/",
-            "Workbench\\App\\": "workbench/app/"
+            "App\\": "workbench/app/",
+            "Database\\Factories\\": "workbench/database/factories/",
+            "Database\\Seeders\\": "workbench/database/seeders/"
         }
     },
     "scripts": {
