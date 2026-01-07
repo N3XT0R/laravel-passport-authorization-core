@@ -156,6 +156,27 @@ php artisan vendor:publish --tag=passport-authorization-core-config
 
 ---
 
+## Documentation
+
+Detailed documentation for **Laravel Passport Authorization Core** is available in the `docs/` directory.
+
+Start here:
+
+- **[Usage](docs/usage.md)**  
+  How to use the package correctly via the Application / Usecase layer.
+
+- **[Usecase Overview](docs/usecases/index.md)**  
+  A structured overview of all available application use cases, including their intent and integration scenarios.
+
+- **[Configuration](docs/configuration.md)**  
+  Optional configuration, model mappings, and integration details.
+
+The documentation is intentionally structured to reflect the package architecture.  
+Consumers are expected to familiarize themselves with the **use case–driven interaction model** before integrating the
+package into application code.
+
+---
+
 ## Configuration & Extensibility
 
 - Supports default and custom Passport models
