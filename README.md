@@ -48,7 +48,7 @@ Instead of treating scopes as arbitrary strings, this package models them explic
 
 - Scopes represent **intent**, not implementation
 - Typical structure:  
-  `resource.action` (e.g. `users.read`, `orders.write`)
+  `resource:action` (e.g. `users:read`, `orders:write`)
 - Enables:
     - consistent naming
     - reasoning about permissions
