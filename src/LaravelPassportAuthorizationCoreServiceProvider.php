@@ -2,7 +2,6 @@
 
 namespace N3XT0R\LaravelPassportAuthorizationCore;
 
-use N3XT0R\LaravelPassportAuthorizationCore\Commands\LaravelPassportAuthorizationCoreCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -10,11 +9,6 @@ class LaravelPassportAuthorizationCoreServiceProvider extends PackageServiceProv
 {
     public function configurePackage(Package $package): void
     {
-        /*
-         * This class is a Package Service Provider
-         *
-         * More info: https://github.com/spatie/laravel-package-tools
-         */
         $package
             ->name('laravel-passport-authorization-core')
             ->hasConfigFile()
