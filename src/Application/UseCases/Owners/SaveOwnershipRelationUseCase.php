@@ -1,0 +1,43 @@
+<?php
+
+declare(strict_types=1);
+
+namespace N3XT0R\LaravelPassportAuthorizationCore\Application\UseCases\Owners;
+
+use Illuminate\Contracts\Auth\Authenticatable;
+use Laravel\Passport\Client;
+use N3XT0R\LaravelPassportAuthorizationCore\Repositories\ClientRepository;
+use N3XT0R\LaravelPassportAuthorizationCore\Repositories\OwnerRepository;
+use N3XT0R\LaravelPassportAuthorizationCore\Services\ClientService;
+
+readonly class SaveOwnershipRelationUseCase
+{
+    public function __construct(
+        private ClientRepository $clientRepository,
+        private OwnerRepository $ownerRepository,
+        private ClientService $clientService
+    ) {
+    }
+
+    /**
+     * Save ownership relation between client and owner
+     * @param Client|string|int $client
+     * @param int $ownerId
+     * @param Authenticatable|null $actor
+     * @return void
+     * @throws \Throwable
+     */
+    public function execute(Client|string|int $client, int $ownerId, ?Authenticatable $actor = null): void
+    {
+        if ($client instanceof Client === false) {
+            $client = $this->clientRepository->find($client);
+        }
+
+        $owner = $this->ownerRepository->findByKey($ownerId);
+        if ($owner === null) {
+            throw new \InvalidArgumentException("Owner with ID {$ownerId} not found.");
+        }
+
+        $this->clientService->changeOwnerOfClient($client, $owner, $actor);
+    }
+}
