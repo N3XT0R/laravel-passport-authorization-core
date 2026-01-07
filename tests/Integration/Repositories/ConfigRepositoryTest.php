@@ -82,46 +82,6 @@ final class ConfigRepositoryTest extends DatabaseTestCase
         );
     }
 
-    public function testGetNavigationGroupReturnsConfiguredValue(): void
-    {
-        config([
-            'passport-authorization-core.navigation.group' => 'Security',
-        ]);
-
-        self::assertSame(
-            'Security',
-            $this->configRepository->getNavigationGroup()
-        );
-    }
-
-    public function testGetNavigationGroupReturnsDefault(): void
-    {
-        self::assertSame(
-            'OAuth Management',
-            $this->configRepository->getNavigationGroup()
-        );
-    }
-
-    public function testGetNavigationIconReturnsConfiguredIcon(): void
-    {
-        config([
-            'passport-authorization-core.navigation.clients.icon' => Heroicon::OutlinedUser,
-        ]);
-
-        self::assertSame(
-            Heroicon::OutlinedUser,
-            $this->configRepository->getNavigationIcon('clients')
-        );
-    }
-
-    public function testGetNavigationIconReturnsDefaultIcon(): void
-    {
-        self::assertSame(
-            Heroicon::OutlinedKey,
-            $this->configRepository->getNavigationIcon('clients')
-        );
-    }
-
     public function testIsUsingDatabaseScopesReturnsTrueWhenEnabled(): void
     {
         config([
