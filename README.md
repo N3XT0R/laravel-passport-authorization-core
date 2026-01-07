@@ -89,7 +89,7 @@ This context can be:
 - ❌ No policy enforcement by itself
 - ❌ No assumptions about application architecture
 
-This package **defines structure and intent** — enforcement remains the responsibility of the application.
+This package **defines structure and intent**  enforcement remains the responsibility of the application.
 
 ---
 
