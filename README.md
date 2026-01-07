@@ -8,8 +8,8 @@
 
 ## Overview
 
-**Laravel Passport Authorization Core** provides a **domain-oriented authorization model** on top of **Laravel Passport
-**.
+**Laravel Passport Authorization Core** provides a **domain-oriented authorization model** on top of
+**Laravel Passport**.
 
 It defines **structured concepts** for scopes, permissions, grants, and authorization context **without any UI, admin
 panel, or framework-specific assumptions** beyond Laravel itself.
