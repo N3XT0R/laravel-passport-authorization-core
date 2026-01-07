@@ -1,6 +1,7 @@
 # Laravel Passport Authorization Core
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/n3xt0r/laravel-passport-authorization-core.svg?style=flat-square)](https://packagist.org/packages/n3xt0r/laravel-passport-authorization-core)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=N3XT0R_laravel-passport-authorization-core&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=N3XT0R_laravel-passport-authorization-core)
 ![ISO 27001 Audit Ready](https://img.shields.io/badge/ISO%2027001-audit--ready-blue?style=flat-square)
 ![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/n3xt0r/laravel-passport-authorization-core/run-tests.yml?branch=main&label=tests&style=flat-square)
 [![Maintainability](https://qlty.sh/gh/N3XT0R/projects/laravel-passport-authorization-core/maintainability.svg)](https://qlty.sh/gh/N3XT0R/projects/laravel-passport-authorization-core)
