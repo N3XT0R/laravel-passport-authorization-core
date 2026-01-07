@@ -15,7 +15,7 @@ final class OAuthClientFactoryBooterTest extends TestCase
     public function testItRegistersOAuthClientFactoryWhenStrategiesAreAllowed(): void
     {
         config([
-            'passport-ui.oauth.allowed_grant_types' => [
+            'passport-authorization-core.oauth.allowed_grant_types' => [
                 OAuthClientType::PERSONAL_ACCESS->value,
             ],
         ]);
@@ -28,12 +28,12 @@ final class OAuthClientFactoryBooterTest extends TestCase
     public function testItThrowsExceptionWhenNoStrategiesAreEnabled(): void
     {
         config([
-            'passport-ui.oauth.allowed_grant_types' => [],
+            'passport-authorization-core.oauth.allowed_grant_types' => [],
         ]);
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(
-            'No OAuth client strategies enabled. Check filament-passport-ui.oauth.allowed_grant_types.'
+            'No OAuth client strategies enabled. Check filament-passport-authorization-core.oauth.allowed_grant_types.'
         );
 
         $this->app->make(OAuthClientFactoryInterface::class);

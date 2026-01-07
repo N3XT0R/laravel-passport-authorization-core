@@ -21,7 +21,7 @@ final class ScopeBooterTest extends DatabaseTestCase
 
     public function testItDoesNothingWhenDatabaseScopesAreDisabled(): void
     {
-        config(['passport-ui.use_database_scopes' => false]);
+        config(['passport-authorization-core.use_database_scopes' => false]);
 
         $this->seedScopes();
 
@@ -32,7 +32,7 @@ final class ScopeBooterTest extends DatabaseTestCase
 
     public function testItDoesNothingWhenScopesAreNotMigrated(): void
     {
-        config(['passport-ui.use_database_scopes' => true]);
+        config(['passport-authorization-core.use_database_scopes' => true]);
 
         $this->app->make(ScopeBooter::class)->boot();
 
@@ -41,7 +41,7 @@ final class ScopeBooterTest extends DatabaseTestCase
 
     public function testItRegistersScopesFromDatabase(): void
     {
-        config(['passport-ui.use_database_scopes' => true]);
+        config(['passport-authorization-core.use_database_scopes' => true]);
 
         $this->seedScopes();
 

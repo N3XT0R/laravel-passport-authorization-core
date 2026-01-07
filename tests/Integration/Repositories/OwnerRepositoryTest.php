@@ -17,7 +17,7 @@ final class OwnerRepositoryTest extends DatabaseTestCase
         parent::setUp();
 
         config([
-            'passport-ui.owner_model' => User::class,
+            'passport-authorization-core.owner_model' => User::class,
         ]);
 
         $this->ownerRepository = $this->app->make(OwnerRepository::class);

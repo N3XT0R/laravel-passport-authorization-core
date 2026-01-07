@@ -25,7 +25,7 @@ final class OAuthStrategyRegistrarTest extends TestCase
         $this->app->make(OAuthStrategyRegistrar::class)->register();
 
         $services = iterator_to_array(
-            $this->app->tagged('filament-passport-ui.oauth.strategies')
+            $this->app->tagged('filament-passport-authorization-core.oauth.strategies')
         );
 
         self::assertContains(

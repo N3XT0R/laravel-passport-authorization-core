@@ -24,7 +24,7 @@ final class PassportModelsBooterTest extends TestCase
     public function testItUsesDefaultClientModelWhenNoneConfigured(): void
     {
         config([
-            'passport-ui.models' => [
+            'passport-authorization-core.models' => [
                 'client' => null,
             ],
         ]);
@@ -37,7 +37,7 @@ final class PassportModelsBooterTest extends TestCase
     public function testItUsesConfiguredPassportModels(): void
     {
         config([
-            'passport-ui.models' => [
+            'passport-authorization-core.models' => [
                 'client' => Client::class,
                 'token' => \Laravel\Passport\Token::class,
                 'auth_code' => \Laravel\Passport\AuthCode::class,
@@ -56,7 +56,7 @@ final class PassportModelsBooterTest extends TestCase
     public function testItSkipsEmptyNonClientModels(): void
     {
         config([
-            'passport-ui.models' => [
+            'passport-authorization-core.models' => [
                 'client' => Client::class,
                 'token' => null,
                 'auth_code' => null,

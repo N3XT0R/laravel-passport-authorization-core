@@ -22,7 +22,7 @@ final class GetAllowedGrantTypeOptionsTest extends DatabaseTestCase
     public function testExecuteReturnsConfiguredGrantTypesAsOptions(): void
     {
         config([
-            'passport-ui.oauth.allowed_grant_types' => [
+            'passport-authorization-core.oauth.allowed_grant_types' => [
                 OAuthClientType::AUTHORIZATION_CODE->value,
                 OAuthClientType::CLIENT_CREDENTIALS->value,
             ],

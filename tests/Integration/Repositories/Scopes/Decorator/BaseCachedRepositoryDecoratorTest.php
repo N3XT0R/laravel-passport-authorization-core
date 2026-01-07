@@ -34,7 +34,7 @@ final class BaseCachedRepositoryDecoratorTest extends DatabaseTestCase
 
     public function testTtlUsesPassportUiConfiguration(): void
     {
-        config(['passport-ui.cache.ttl' => 120]);
+        config(['passport-authorization-core.cache.ttl' => 120]);
 
         self::assertSame(120, $this->decorator->ttlSeconds());
     }

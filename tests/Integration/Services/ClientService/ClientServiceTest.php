@@ -211,7 +211,7 @@ final class ClientServiceTest extends DatabaseTestCase
     public function testGetOwnerLabelAttributeReturnsConfiguredLabel(): void
     {
         config([
-            'passport-ui.owner_label_attribute' => 'name',
+            'passport-authorization-core.owner_label_attribute' => 'name',
         ]);
 
         $owner = User::factory()->create([
@@ -231,7 +231,7 @@ final class ClientServiceTest extends DatabaseTestCase
     public function testGetOwnerLabelAttributeReturnsLabelUsingClientId(): void
     {
         config([
-            'passport-ui.owner_label_attribute' => 'name',
+            'passport-authorization-core.owner_label_attribute' => 'name',
         ]);
 
         $owner = User::factory()->create([
@@ -267,7 +267,7 @@ final class ClientServiceTest extends DatabaseTestCase
     public function testGetOwnerLabelAttributeReturnsNullWhenConfiguredLabelMissing(): void
     {
         config([
-            'passport-ui.owner_label_attribute' => 'non_existing_property',
+            'passport-authorization-core.owner_label_attribute' => 'non_existing_property',
         ]);
 
         $owner = User::factory()->create([

@@ -14,7 +14,7 @@ final class ClientTest extends DatabaseTestCase
 {
     public function testHasScopeUsesParentBehaviorWhenDatabaseScopesDisabled(): void
     {
-        config(['passport-ui.use_database_scopes' => false]);
+        config(['passport-authorization-core.use_database_scopes' => false]);
 
         $client = Client::factory()->create();
 
@@ -26,7 +26,7 @@ final class ClientTest extends DatabaseTestCase
 
     public function testHasScopeUsesDatabaseBackedScopeGrantsWhenEnabled(): void
     {
-        config(['passport-ui.use_database_scopes' => true]);
+        config(['passport-authorization-core.use_database_scopes' => true]);
 
         $resource = PassportScopeResource::factory()->create([
             'name' => 'profile',

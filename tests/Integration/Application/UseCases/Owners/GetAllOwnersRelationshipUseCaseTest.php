@@ -25,8 +25,8 @@ final class GetAllOwnersRelationshipUseCaseTest extends DatabaseTestCase
         $second = User::factory()->create(['name' => 'Second Owner']);
 
         config([
-            'passport-ui.owner_model' => $first::class,
-            'passport-ui.owner_label_attribute' => 'name',
+            'passport-authorization-core.owner_model' => $first::class,
+            'passport-authorization-core.owner_label_attribute' => 'name',
         ]);
 
         $options = $this->useCase->execute();
