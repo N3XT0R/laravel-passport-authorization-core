@@ -35,18 +35,21 @@ class ScopeGrantRepository
      * @param HasPassportScopeGrantsInterface $tokenable
      * @param int $resourceId
      * @param int $actionId
+     * @param string|int|null $clientId
      * @return PassportScopeGrant
      */
     public function createOrUpdateScopeGrantForTokenable(
         HasPassportScopeGrantsInterface $tokenable,
         int $resourceId,
         int $actionId,
+        string|int|null $clientId = null
     ): PassportScopeGrant {
         return PassportScopeGrant::updateOrCreate([
             'tokenable_type' => $tokenable->getMorphClass(),
             'tokenable_id' => $tokenable->getKey(),
             'resource_id' => $resourceId,
             'action_id' => $actionId,
+            'context_client_id' => $clientId,
         ]);
     }
 

@@ -21,6 +21,7 @@ class PassportScopeGrant extends Model
     protected $fillable = [
         'tokenable_type',
         'tokenable_id',
+        'context_client_id',
         'resource_id',
         'action_id',
     ];

@@ -7,6 +7,7 @@ namespace N3XT0R\LaravelPassportAuthorizationCore\Services;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Laravel\Passport\Client;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\Concerns\HasPassportScopeGrantsInterface;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeGrant;
 use N3XT0R\LaravelPassportAuthorizationCore\Repositories\Scopes\Contracts\ActionRepositoryContract;
@@ -36,6 +37,7 @@ readonly class GrantService
         string $resourceName,
         string $actionName,
         ?Authenticatable $actor = null,
+        ?Client $client = null,
     ): PassportScopeGrant {
         $resource = $this->resourceRepository->findByName($resourceName);
         if ($resource === null) {
@@ -51,6 +53,7 @@ readonly class GrantService
             $tokenable,
             $resource->getKey(),
             $action->getKey(),
+            $client?->getKey(),
         );
 
         if ($result && $actor) {
@@ -75,6 +78,8 @@ readonly class GrantService
      * @param Model&HasPassportScopeGrantsInterface $tokenable
      * @param string $resourceName
      * @param string $actionName
+     * @param Authenticatable|null $actor
+     * @param Client|null $client
      * @return bool
      */
     public function revokeScopeFromTokenable(
@@ -82,6 +87,7 @@ readonly class GrantService
         string $resourceName,
         string $actionName,
         ?Authenticatable $actor = null,
+        ?Client $client = null,
     ): bool {
         $resource = $this->resourceRepository->findByName($resourceName);
         if ($resource === null) {
@@ -127,6 +133,7 @@ readonly class GrantService
         HasPassportScopeGrantsInterface $tokenable,
         string $resourceName,
         string $actionName,
+        ?Client $client = null,
     ): bool {
         $resource = $this->resourceRepository->findByName($resourceName);
         if ($resource === null) {
@@ -154,6 +161,7 @@ readonly class GrantService
     public function tokenableHasGrantToScope(
         HasPassportScopeGrantsInterface $tokenable,
         string $scopeString,
+        ?Client $client = null,
     ): bool {
         $scope = Scope::fromString($scopeString);
 

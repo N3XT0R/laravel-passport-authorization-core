@@ -32,6 +32,7 @@ readonly class EditClientUseCase
      * @param array $data
      * @param Authenticatable|null $actor
      * @return Client
+     * @throws \Throwable
      */
     public function execute(Client $client, array $data, ?Authenticatable $actor = null): Client
     {

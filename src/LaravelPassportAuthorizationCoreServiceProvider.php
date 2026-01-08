@@ -74,6 +74,7 @@ class LaravelPassportAuthorizationCoreServiceProvider extends PackageServiceProv
             'create_passport_scope_resources_table',
             'create_passport_scope_actions_table',
             'create_passport_scope_grant_table',
+            'add_client_id_to_passport_scope_grants_table'
         ];
     }
 
