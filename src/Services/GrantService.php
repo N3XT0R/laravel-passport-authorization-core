@@ -156,19 +156,25 @@ readonly class GrantService
      * Check if the tokenable has a grant to a specific scope.
      * @param HasPassportScopeGrantsInterface $tokenable
      * @param string $scopeString
+     * @param Client|string|int|null $client
      * @return bool
      */
     public function tokenableHasGrantToScope(
         HasPassportScopeGrantsInterface $tokenable,
         string $scopeString,
-        ?Client $client = null,
+        Client|string|int|null $client = null,
     ): bool {
+        $clientId = $client;
+        if ($client instanceof Client) {
+            $clientId = $client->getKey();
+        }
         $scope = Scope::fromString($scopeString);
 
         return $this->tokenableHasGrant(
             $tokenable,
             $scope->resource,
             $scope->action,
+            $clientId
         );
     }
 
