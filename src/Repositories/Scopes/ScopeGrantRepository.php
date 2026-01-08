@@ -15,18 +15,21 @@ class ScopeGrantRepository
      * @param HasPassportScopeGrantsInterface $tokenable
      * @param int $resourceId
      * @param int $actionId
+     * @param string|int|null $clientId
      * @return PassportScopeGrant
      */
     public function createScopeGrantForTokenable(
         HasPassportScopeGrantsInterface $tokenable,
         int $resourceId,
         int $actionId,
+        string|int|null $clientId = null
     ): PassportScopeGrant {
         return PassportScopeGrant::create([
             'tokenable_type' => $tokenable->getMorphClass(),
             'tokenable_id' => $tokenable->getKey(),
             'resource_id' => $resourceId,
             'action_id' => $actionId,
+            'context_client_id' => $clientId,
         ]);
     }
 
@@ -84,6 +87,7 @@ class ScopeGrantRepository
      * @param HasPassportScopeGrantsInterface $tokenable
      * @param int $resourceId
      * @param int $actionId
+     * @param string|int|null $clientId
      * @return bool
      */
     public function tokenableHasScopeGrant(
@@ -137,14 +141,22 @@ class ScopeGrantRepository
     /**
      * Delete all scope grants for the given tokenable.
      * @param HasPassportScopeGrantsInterface $tokenable
+     * @param string|int|null $clientId
      * @return int
      */
     public function deleteAllGrantsForTokenable(
         HasPassportScopeGrantsInterface $tokenable,
+        string|int|null $clientId = null
     ): int {
-        return (int)PassportScopeGrant::where('tokenable_type', $tokenable->getMorphClass())
-            ->where('tokenable_id', $tokenable->getKey())
-            ->delete();
+        $query = PassportScopeGrant::where('tokenable_type', $tokenable->getMorphClass())
+            ->where('tokenable_id', $tokenable->getKey());
+
+        if ($clientId) {
+            $query->where('context_client_id', $clientId);
+        }
+
+
+        return (int)$query->delete();
     }
 
     /**
