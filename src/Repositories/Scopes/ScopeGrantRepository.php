@@ -119,23 +119,38 @@ class ScopeGrantRepository
         HasPassportScopeGrantsInterface $tokenable,
         int $resourceId,
         int $actionId,
+        string|int|null $clientId = null
     ): bool {
-        return $tokenable->passportScopeGrants()
+        $query = $tokenable->passportScopeGrants()
             ->where('resource_id', $resourceId)
-            ->where('action_id', $actionId)
-            ->exists();
+            ->where('action_id', $actionId);
+        
+        if ($clientId) {
+            $query->where('context_client_id', $clientId);
+        }
+
+        return $query->exists();
     }
 
     /**
      * Get all scope grants for the given tokenable.
      * @param HasPassportScopeGrantsInterface $tokenable
+     * @param string|int|null $clientId
      * @return Collection<PassportScopeGrant>
      */
-    public function getTokenableGrants(HasPassportScopeGrantsInterface $tokenable): Collection
-    {
-        return $tokenable->passportScopeGrants()
-            ->with(['resource', 'action'])
-            ->get();
+    public function getTokenableGrants(
+        HasPassportScopeGrantsInterface $tokenable,
+        string|int|null $clientId = null
+    ): Collection {
+        $query = $tokenable->passportScopeGrants()
+            ->with(['resource', 'action']);
+
+        if ($clientId) {
+            $query->where('context_client_id', $clientId);
+        }
+
+
+        return $query->get();
     }
 
     /**

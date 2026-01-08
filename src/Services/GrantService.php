@@ -156,25 +156,21 @@ readonly class GrantService
      * Check if the tokenable has a grant to a specific scope.
      * @param HasPassportScopeGrantsInterface $tokenable
      * @param string $scopeString
-     * @param Client|string|int|null $client
+     * @param Client|null $client
      * @return bool
      */
     public function tokenableHasGrantToScope(
         HasPassportScopeGrantsInterface $tokenable,
         string $scopeString,
-        Client|string|int|null $client = null,
+        ?Client $client = null,
     ): bool {
-        $clientId = $client;
-        if ($client instanceof Client) {
-            $clientId = $client->getKey();
-        }
         $scope = Scope::fromString($scopeString);
 
         return $this->tokenableHasGrant(
             $tokenable,
             $scope->resource,
             $scope->action,
-            $clientId
+            $client
         );
     }
 
@@ -252,11 +248,12 @@ readonly class GrantService
         Model&HasPassportScopeGrantsInterface $tokenable,
         array $scopes,
         ?Authenticatable $actor = null,
+        ?Client $client = null,
     ): void {
         foreach ($scopes as $scopeString) {
             $scope = Scope::fromString($scopeString);
 
-            if (!$this->tokenableHasGrantToScope($tokenable, $scopeString)) {
+            if (!$this->tokenableHasGrantToScope($tokenable, $scopeString, $client)) {
                 continue;
             }
 
@@ -264,6 +261,7 @@ readonly class GrantService
                 $tokenable,
                 $scope->resource,
                 $scope->action,
+                $client
             );
         }
 
@@ -274,6 +272,7 @@ readonly class GrantService
                     'tokenable' => [
                         'type' => $tokenable->getMorphClass(),
                         'id' => $tokenable->getKey(),
+                        'client_id' => $client?->getKey(),
                     ],
                     'revoked_scopes' => $scopes,
                 ])
@@ -292,14 +291,15 @@ readonly class GrantService
         Model&HasPassportScopeGrantsInterface $tokenable,
         array $scopes,
         ?Authenticatable $actor = null,
+        ?Client $client = null,
     ): void {
         $existingGrants = $this->getTokenableGrantsAsScopes($tokenable)->toArray();
 
         $scopesToRevoke = array_diff($existingGrants, $scopes);
         $scopesToGrant = array_diff($scopes, $existingGrants);
 
-        $this->revokeGrantsFromTokenable($tokenable, $scopesToRevoke);
-        $this->giveGrantsToTokenable($tokenable, $scopesToGrant);
+        $this->revokeGrantsFromTokenable($tokenable, $scopesToRevoke, $client);
+        $this->giveGrantsToTokenable($tokenable, $scopesToGrant, $client);
 
         if ($actor) {
             activity('oauth')
