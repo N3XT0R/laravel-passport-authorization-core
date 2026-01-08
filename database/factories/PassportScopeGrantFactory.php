@@ -19,6 +19,7 @@ class PassportScopeGrantFactory extends Factory
         return [
             'resource_id' => PassportScopeResource::factory(),
             'action_id' => PassportScopeAction::factory(),
+            'context_client_id' => null,
         ];
     }
 
