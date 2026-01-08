@@ -56,6 +56,7 @@ class PassportScopeGrant extends Model
 
     /**
      * The context client (nullable)
+     * describes the client for which this grant is valid
      * @return BelongsTo
      */
     public function contextClient(): BelongsTo
