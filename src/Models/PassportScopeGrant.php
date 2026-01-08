@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Laravel\Passport\Passport;
 
 /**
  * Scope grant assigned to a Passport owner (User, ServiceAccount, etc.)
@@ -51,6 +52,11 @@ class PassportScopeGrant extends Model
     public function action(): BelongsTo
     {
         return $this->belongsTo(PassportScopeAction::class);
+    }
+
+    public function contextClient(): BelongsTo
+    {
+        return $this->belongsTo(Passport::clientModel(), 'context_client_id', 'id');
     }
 
     /**
