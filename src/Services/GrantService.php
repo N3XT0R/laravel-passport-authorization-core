@@ -30,6 +30,7 @@ readonly class GrantService
      * @param string $resourceName
      * @param string $actionName
      * @param Authenticatable|null $actor
+     * @param Client|null $client
      * @return PassportScopeGrant
      */
     public function grantScopeToTokenable(
@@ -207,10 +208,6 @@ readonly class GrantService
         ?Authenticatable $actor = null,
         ?Client $client = null,
     ): void {
-        if ($tokenable instanceof Client) {
-            $client = $tokenable;
-        }
-
         foreach ($scopes as $scopeString) {
             $scope = Scope::fromString($scopeString);
 

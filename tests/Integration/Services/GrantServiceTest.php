@@ -161,7 +161,11 @@ final class GrantServiceTest extends DatabaseTestCase
         PassportScopeAction::factory()->create(['name' => 'read']);
         PassportScopeAction::factory()->create(['name' => 'update']);
 
-        $this->service->grantScopeToTokenable($client, 'users', 'read');
+        $this->service->grantScopeToTokenable(
+            tokenable: $client,
+            resourceName: 'users',
+            actionName: 'read',
+        );
 
         $this->service->giveGrantsToTokenable(
             $client,
