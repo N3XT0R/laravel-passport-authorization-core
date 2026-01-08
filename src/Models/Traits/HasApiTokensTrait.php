@@ -6,6 +6,7 @@ namespace N3XT0R\LaravelPassportAuthorizationCore\Models\Traits;
 
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Passport\HasApiTokens as BaseHasApiTokens;
+use N3XT0R\LaravelPassportAuthorizationCore\Repositories\ClientRepository;
 use N3XT0R\LaravelPassportAuthorizationCore\Services\GrantService;
 
 trait HasApiTokensTrait
@@ -26,7 +27,7 @@ trait HasApiTokensTrait
             $result = app(GrantService::class)->tokenableHasGrantToScope(
                 $this,
                 $scope,
-                $this->getClientId()
+                $this->getClient()
             );
         }
 
@@ -34,14 +35,17 @@ trait HasApiTokensTrait
         return $result;
     }
 
-    private function getClientId(): ?int
+    private function getClient(): ?int
     {
-        $clientId = null;
+        $client = null;
         $currentToken = $this->currentAccessToken();
         if ($currentToken instanceof Model) {
             $clientId = $currentToken->getAttribute('client_id');
+            if ($clientId) {
+                $client = app(ClientRepository::class)->find($clientId);
+            }
         }
 
-        return $clientId;
+        return $client;
     }
 }
