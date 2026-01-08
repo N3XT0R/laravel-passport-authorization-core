@@ -221,6 +221,7 @@ readonly class GrantService
                 $tokenable,
                 $scope->resource,
                 $scope->action,
+                $actor,
                 $client
             );
         }
