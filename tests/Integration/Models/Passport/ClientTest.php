@@ -45,7 +45,7 @@ final class ClientTest extends DatabaseTestCase
             ->create([
                 'resource_id' => $resource->getKey(),
                 'action_id' => $action->getKey(),
-                'context_client_id' = $client->getKey(),
+                'context_client_id' => $client->getKey(),
             ]);
 
         self::assertTrue($client->hasScope('profile:read'));
