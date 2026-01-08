@@ -54,7 +54,7 @@ readonly class CreateClientUseCase
         $this->grantService->giveGrantsToTokenable(
             tokenable: $client,
             scopes: $scopes,
-            actor: $actor
+            actor: $actor,
         );
 
         OAuthClientCreatedEvent::dispatch($client, $actor);

@@ -199,17 +199,19 @@ readonly class GrantService
      * @param HasPassportScopeGrantsInterface&Model $tokenable
      * @param array $scopes
      * @param Authenticatable|null $actor
+     * @param Client|null $client
      * @return void
      */
     public function giveGrantsToTokenable(
         Model&HasPassportScopeGrantsInterface $tokenable,
         array $scopes,
         ?Authenticatable $actor = null,
+        ?Client $client = null,
     ): void {
         foreach ($scopes as $scopeString) {
             $scope = Scope::fromString($scopeString);
 
-            if ($this->tokenableHasGrantToScope($tokenable, $scopeString)) {
+            if ($this->tokenableHasGrantToScope($tokenable, $scopeString, $client)) {
                 continue;
             }
 
@@ -218,6 +220,7 @@ readonly class GrantService
                 $tokenable,
                 $scope->resource,
                 $scope->action,
+                $client
             );
         }
 
