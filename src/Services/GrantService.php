@@ -149,6 +149,7 @@ readonly class GrantService
             tokenable: $tokenable,
             resourceId: $resource->getKey(),
             actionId: $action->getKey(),
+            clientId: $client?->getKey(),
         );
     }
 
