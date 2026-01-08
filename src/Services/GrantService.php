@@ -64,6 +64,7 @@ readonly class GrantService
                         'type' => $tokenable->getMorphClass(),
                         'id' => $tokenable->getKey(),
                     ],
+                    'client_id' => $client?->getKey(),
                     'granted_scope' => new Scope($resourceName, $actionName)->toString(),
                 ])
                 ->log('OAuth scope grant given to tokenable');
@@ -113,6 +114,7 @@ readonly class GrantService
                         'type' => $tokenable->getMorphClass(),
                         'id' => $tokenable->getKey(),
                     ],
+                    'client_id' => $client?->getKey(),
                     'revoked_scope' => new Scope($resourceName, $actionName)->toString(),
                 ])
                 ->log('OAuth scope grant revoked from tokenable');
@@ -234,6 +236,7 @@ readonly class GrantService
                         'type' => $tokenable->getMorphClass(),
                         'id' => $tokenable->getKey(),
                     ],
+                    'client_id' => $client?->getKey(),
                     'granted_scopes' => $scopes,
                 ])
                 ->log('OAuth scope grants given to tokenable');
@@ -274,8 +277,8 @@ readonly class GrantService
                     'tokenable' => [
                         'type' => $tokenable->getMorphClass(),
                         'id' => $tokenable->getKey(),
-                        'client_id' => $client?->getKey(),
                     ],
+                    'client_id' => $client?->getKey(),
                     'revoked_scopes' => $scopes,
                 ])
                 ->log('OAuth scope grants revoked from tokenable');
@@ -311,6 +314,7 @@ readonly class GrantService
                         'type' => $tokenable->getMorphClass(),
                         'id' => $tokenable->getKey(),
                     ],
+                    'client_id' => $client?->getKey(),
                     'upserted_scopes' => $scopes,
                 ])
                 ->log('OAuth scope grants upserted for tokenable');
