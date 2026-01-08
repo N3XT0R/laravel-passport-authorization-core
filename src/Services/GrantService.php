@@ -208,6 +208,10 @@ readonly class GrantService
         ?Authenticatable $actor = null,
         ?Client $client = null,
     ): void {
+        if ($tokenable instanceof Client) {
+            $client = $tokenable;
+        }
+
         foreach ($scopes as $scopeString) {
             $scope = Scope::fromString($scopeString);
 
