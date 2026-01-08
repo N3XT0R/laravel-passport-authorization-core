@@ -23,7 +23,8 @@ class Client extends PassportClient implements HasPassportScopeGrantsInterface
 
         return app(GrantService::class)->tokenableHasGrantToScope(
             $this,
-            $scope
+            $scope,
+            $this->getKey()
         );
     }
 }
