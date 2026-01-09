@@ -19,7 +19,7 @@ final class CachedResourceRepositoryDecorator extends BaseCachedRepositoryDecora
     ];
 
     public function __construct(
-        private readonly ResourceRepositoryContract $innerRepository,
+        protected readonly ResourceRepositoryContract $innerRepository,
     ) {
     }
 

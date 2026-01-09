@@ -15,8 +15,8 @@ use N3XT0R\LaravelPassportAuthorizationCore\ValueObjects\Scopes\ScopeName;
 readonly class ScopeRegistryService
 {
     public function __construct(
-        private ResourceRepositoryContract $resourceRepository,
-        private ActionRepositoryContract $actionRepository
+        protected ResourceRepositoryContract $resourceRepository,
+        protected ActionRepositoryContract $actionRepository
     ) {
     }
 

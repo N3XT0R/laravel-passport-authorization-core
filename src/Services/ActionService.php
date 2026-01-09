@@ -10,7 +10,7 @@ use N3XT0R\LaravelPassportAuthorizationCore\Repositories\Scopes\ActionRepository
 
 readonly class ActionService
 {
-    public function __construct(private ActionRepository $actionRepository)
+    public function __construct(protected ActionRepository $actionRepository)
     {
     }
 

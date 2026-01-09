@@ -10,7 +10,7 @@ use N3XT0R\LaravelPassportAuthorizationCore\Repositories\Scopes\ResourceReposito
 
 readonly class ResourceService
 {
-    public function __construct(private ResourceRepository $resourceRepository)
+    public function __construct(protected ResourceRepository $resourceRepository)
     {
     }
 

@@ -11,7 +11,7 @@ use N3XT0R\LaravelPassportAuthorizationCore\Services\Scopes\ScopeRegistryService
  */
 readonly class ClearCacheUseCase
 {
-    public function __construct(private ScopeRegistryService $scopeRegistryService)
+    public function __construct(protected ScopeRegistryService $scopeRegistryService)
     {
     }
 

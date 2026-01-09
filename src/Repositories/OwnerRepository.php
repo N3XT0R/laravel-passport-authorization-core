@@ -12,7 +12,7 @@ use Laravel\Passport\Contracts\OAuthenticatable;
 readonly class OwnerRepository
 {
 
-    public function __construct(private ConfigRepository $configRepository)
+    public function __construct(protected ConfigRepository $configRepository)
     {
     }
 

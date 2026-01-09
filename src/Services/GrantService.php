@@ -17,9 +17,9 @@ use N3XT0R\LaravelPassportAuthorizationCore\Support\OAuth\ValueObjects\Scope;
 readonly class GrantService
 {
     public function __construct(
-        private ScopeGrantRepository $scopeGrantRepository,
-        private ResourceRepositoryContract $resourceRepository,
-        private ActionRepositoryContract $actionRepository,
+        protected ScopeGrantRepository $scopeGrantRepository,
+        protected ResourceRepositoryContract $resourceRepository,
+        protected ActionRepositoryContract $actionRepository,
     ) {
     }
 

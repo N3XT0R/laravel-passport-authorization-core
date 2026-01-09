@@ -17,7 +17,7 @@ use Throwable;
 
 readonly class ClientService
 {
-    public function __construct(private ClientRepository $clientRepository)
+    public function __construct(protected ClientRepository $clientRepository)
     {
     }
 

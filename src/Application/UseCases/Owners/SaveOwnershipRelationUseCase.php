@@ -13,9 +13,9 @@ use N3XT0R\LaravelPassportAuthorizationCore\Services\ClientService;
 readonly class SaveOwnershipRelationUseCase
 {
     public function __construct(
-        private ClientRepository $clientRepository,
-        private OwnerRepository $ownerRepository,
-        private ClientService $clientService
+        protected ClientRepository $clientRepository,
+        protected OwnerRepository $ownerRepository,
+        protected ClientService $clientService
     ) {
     }
 

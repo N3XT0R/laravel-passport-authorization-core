@@ -15,7 +15,7 @@ readonly class OAuthClientFactory implements OAuthClientFactoryInterface
 {
     /** @param iterable<OAuthClientCreationStrategyInterface> $strategies */
     public function __construct(
-        private iterable $strategies
+        protected iterable $strategies
     ) {
     }
 

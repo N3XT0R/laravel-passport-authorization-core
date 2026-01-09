@@ -10,7 +10,7 @@ use N3XT0R\LaravelPassportAuthorizationCore\Repositories\ConfigRepository;
 
 readonly class GetAllOwnersRelationshipUseCase extends GetAllOwnersUseCase
 {
-    public function __construct(private ConfigRepository $configRepository)
+    public function __construct(protected ConfigRepository $configRepository)
     {
     }
 

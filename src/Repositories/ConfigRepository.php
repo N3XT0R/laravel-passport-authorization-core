@@ -15,7 +15,7 @@ readonly class ConfigRepository
     private const string CONFIG_ROOT = 'passport-authorization-core.';
 
 
-    public function __construct(private Repository $config)
+    public function __construct(protected Repository $config)
     {
     }
 
