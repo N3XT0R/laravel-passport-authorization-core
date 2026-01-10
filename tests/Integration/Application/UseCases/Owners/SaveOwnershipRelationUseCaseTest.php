@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace N3XT0R\LaravelPassportAuthorizationCore\Tests\Integration\Application\UseCases\Owners;
 
 use App\Models\User;
-use InvalidArgumentException;
 use N3XT0R\LaravelPassportAuthorizationCore\Application\UseCases\Owners\SaveOwnershipRelationUseCase;
+use N3XT0R\LaravelPassportAuthorizationCore\Exceptions\Domain\Owners\OwnerNotExistsException;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\Passport\Client;
 use N3XT0R\LaravelPassportAuthorizationCore\Tests\DatabaseTestCase;
 
@@ -37,7 +37,7 @@ final class SaveOwnershipRelationUseCaseTest extends DatabaseTestCase
     {
         $client = Client::factory()->create();
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(OwnerNotExistsException::class);
 
         $this->useCase->execute($client->getKey(), 123456);
     }
