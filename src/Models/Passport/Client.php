@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace N3XT0R\LaravelPassportAuthorizationCore\Models\Passport;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Passport\Client as PassportClient;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\Concerns\HasPassportScopeGrantsInterface;
+use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeGrant;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\Traits\HasPassportScopeGrantsTrait;
 use N3XT0R\LaravelPassportAuthorizationCore\Repositories\ConfigRepository;
 use N3XT0R\LaravelPassportAuthorizationCore\Services\GrantService;
@@ -25,6 +27,20 @@ class Client extends PassportClient implements HasPassportScopeGrantsInterface
             tokenable: $this,
             scopeString: $scope,
             contextClient: $this
+        );
+    }
+
+
+    /**
+     * Get all scope grants associated with this client as context client.
+     * @return HasMany<PassportScopeGrant>
+     */
+    public function contextScopeGrants(): HasMany
+    {
+        return $this->hasMany(
+            PassportScopeGrant::class,
+            'context_client_id',
+            'id'
         );
     }
 }
