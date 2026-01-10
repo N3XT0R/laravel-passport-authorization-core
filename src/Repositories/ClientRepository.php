@@ -97,4 +97,13 @@ class ClientRepository extends BaseRepository
             ]),
         ])->save();
     }
+
+    /**
+     * Get all active (not revoked) OAuth clients.
+     * @return Collection<Client>
+     */
+    public function getActive(): Collection
+    {
+        return Passport::clientModel()::where('revoked', false)->get();
+    }
 }
