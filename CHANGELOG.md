@@ -29,6 +29,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - upsert grants for tokenables
 - Established a consistent, event-driven authorization workflow for tokenable grant
   changes, enabling auditability and external integration.
+- Added read-only application use cases for querying OAuth clients, scopes, and grants.
+- Introduced `GetAllClientsUseCase` to retrieve all OAuth clients or only active clients
+  via the client repository.
+- Added `GetAllActionsUseCase` to retrieve all available Passport scope actions with
+  optional cache bypass.
+- Added `GetAllResourcesUseCase` to retrieve all available Passport scope resources with
+  optional cache bypass.
+- Added `GetAllGrantsUseCase` to retrieve all scope grants from the authorization store.
+- Added `GetGrantsForTokenableUseCase` to retrieve all scope grants assigned to a given
+  grantable tokenable model.
+- Added `GetGrantsForTokenableByTypeAndId` to retrieve scope grants for tokenables when
+  only type and identifier are available.
+- Established a consistent, use case–driven read model for authorization data, enabling
+  UI layers and external consumers to query authorization state without accessing
+  repositories directly.
 
 ### Fixed
 
