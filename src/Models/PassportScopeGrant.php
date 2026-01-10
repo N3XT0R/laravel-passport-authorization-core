@@ -70,6 +70,6 @@ class PassportScopeGrant extends Model
      */
     public function toScopeString(): string
     {
-        return "{$this->resource->name}.{$this->action->name}";
+        return "{$this->resource->name}:{$this->action->name}";
     }
 }
