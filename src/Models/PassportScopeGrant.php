@@ -65,7 +65,7 @@ class PassportScopeGrant extends Model
     }
 
     /**
-     * Normalized Passport scope string (videos.read)
+     * Normalized Passport scope string (videos:read)
      * @return string
      */
     public function toScopeString(): string
