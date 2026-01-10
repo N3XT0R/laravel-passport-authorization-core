@@ -128,6 +128,9 @@ class ScopeGrantRepository
             ->where('action_id', $actionId);
 
         if ($clientId) {
+            /**
+             * backward compatibility: check for both null and specific client ID
+             */
             $query->where(function (Builder $query) use ($clientId) {
                 $query->whereNull('context_client_id')
                     ->orWhere('context_client_id', $clientId);
