@@ -45,6 +45,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   UI layers and external consumers to query authorization state without accessing
   repositories directly.
 
+### Changed
+
+- Updated `SaveOwnershipRelationUseCase` to enforce stricter domain validation and
+  ownership consistency.
+- Replaced generic argument validation with explicit domain exceptions for missing
+  clients and owners.
+- Ensured that all existing scope grants of a previous owner are revoked when a
+  client ownership changes.
+- Clarified ownership change semantics by making authorization cleanup an explicit
+  part of the ownership transition process.
+
 ### Fixed
 
 - Fixed wrong normalization on `PassportScopeGrant::toScopeString` incorrect scope strings like `resource.` instead of
