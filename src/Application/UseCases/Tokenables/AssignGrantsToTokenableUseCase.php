@@ -7,6 +7,8 @@ namespace N3XT0R\LaravelPassportAuthorizationCore\Application\UseCases\Tokenable
 use Illuminate\Contracts\Auth\Authenticatable;
 use N3XT0R\LaravelPassportAuthorizationCore\Exceptions\Domain\ActiveClientNotExistsException;
 use N3XT0R\LaravelPassportAuthorizationCore\Exceptions\Domain\Owners\OwnerNotExistsException;
+use N3XT0R\LaravelPassportAuthorizationCore\Exceptions\Domain\Tokenables\IsNotGrantableException;
+use N3XT0R\LaravelPassportAuthorizationCore\Models\Concerns\HasPassportScopeGrantsInterface;
 use N3XT0R\LaravelPassportAuthorizationCore\Repositories\ClientRepository;
 use N3XT0R\LaravelPassportAuthorizationCore\Repositories\OwnerRepository;
 use N3XT0R\LaravelPassportAuthorizationCore\Services\GrantService;
@@ -33,9 +35,21 @@ readonly class AssignGrantsToTokenableUseCase
         }
 
         $owner = $this->ownerRepository->findByKey($ownerId);
+        $ownerModelClass = $this->ownerRepository->getOwnerModelClass();
+
         if (!$owner) {
-            $ownerModelClass = $this->ownerRepository->getOwnerModelClass();
             throw new OwnerNotExistsException($ownerModelClass, $ownerId);
         }
+
+        if ($owner instanceof HasPassportScopeGrantsInterface === false) {
+            throw new IsNotGrantableException($ownerModelClass, $ownerId);
+        }
+
+        $this->grantService->giveGrantsToTokenable(
+            tokenable: $owner,
+            scopes: $scopes,
+            actor: $actor,
+            contextClient: $client
+        );
     }
 }
