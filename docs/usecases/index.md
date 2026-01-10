@@ -39,6 +39,9 @@ a single application-level operation and is intended to be called from controlle
 | Use case                                                                               | Description                                                          |
 |----------------------------------------------------------------------------------------|----------------------------------------------------------------------|
 | [AssignGrantsToTokenableUseCase](tokenable/assign-grants-to-tokenable-use-case.md)     | Assigns scope grants to a tokenable for a specific client context.   |
+| [GetAllGrantsUseCase](tokenable/get-all-grants-use-case.md)                            | Fetches all scope grants across tokenables and clients.              |
+| [GetGrantsForTokenableUseCase](tokenable/get-grants-for-tokenable-use-case.md)         | Fetches all scope grants for a specific tokenable.                   |
+| [GetGrantsForTokenableByTypeAndId](tokenable/get-grants-for-tokenable-by-type-and-id.md) | Fetches scope grants for a tokenable by type and ID.               |
 | [RevokeGrantsFromTokenableUseCase](tokenable/revoke-grants-from-tokenable-use-case.md) | Revokes scope grants from a tokenable for a specific client context. |
 | [UpsertGrantsForTokenableUseCase](tokenable/upsert-grants-for-tokenable-use-case.md)   | Upserts scope grants for a tokenable for a specific client context.  |
 
