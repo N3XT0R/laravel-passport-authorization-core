@@ -206,4 +206,18 @@ class ScopeGrantRepository
         return (int)PassportScopeGrant::whereDoesntHave('tokenable')
             ->delete();
     }
+
+    /**
+     * Get all scope grants.
+     * @return Collection
+     */
+    public function getAllGrants(): Collection
+    {
+        return PassportScopeGrant::with([
+            'tokenable',
+            'resource',
+            'action',
+            'contextClient'
+        ])->get();
+    }
 }
