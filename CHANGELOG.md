@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Introduced `GrantableTokenableResolver` to centralize resolution and validation of
+  grantable tokenables and their active client context.
+- Added `GrantableTokenableContext` DTO to represent resolved authorization context
+  in a typed, explicit form.
+- Added domain events for tokenable grant lifecycle:
+    - `TokenableGrantsAssigned`
+    - `TokenableGrantsRevoked`
+    - `TokenableGrantsUpserted`
+- Added application use cases for managing tokenable grants:
+    - assign grants to tokenables
+    - revoke grants from tokenables
+    - upsert grants for tokenables
+- Established a consistent, event-driven authorization workflow for tokenable grant
+  changes, enabling auditability and external integration.
+
 ### Fixed
 
 - Fixed wrong normalization on `PassportScopeGrant::toScopeString` incorrect scope strings like `resource.` instead of
