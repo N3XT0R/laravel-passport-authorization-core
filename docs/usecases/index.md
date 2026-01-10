@@ -5,19 +5,19 @@ a single application-level operation and is intended to be called from controlle
 
 ### Action Use Cases
 
-| Use case                                         | Description                                                                  |
-|--------------------------------------------------|------------------------------------------------------------------------------|
-| [CreateActionUseCase](create-action-use-case.md) | Creates a new scope action and emits an `ActionCreatedEvent` when persisted. |
-| [EditActionUseCase](edit-action-use-case.md)     | Updates an existing scope action and emits an `ActionUpdatedEvent`.          |
-| [DeleteActionUseCase](delete-action-use-case.md) | Deletes a scope action and emits an `ActionDeletedEvent` on success.         |
+| Use case                                                 | Description                                                                  |
+|----------------------------------------------------------|------------------------------------------------------------------------------|
+| [CreateActionUseCase](actions/create-action-use-case.md) | Creates a new scope action and emits an `ActionCreatedEvent` when persisted. |
+| [EditActionUseCase](actions/edit-action-use-case.md)     | Updates an existing scope action and emits an `ActionUpdatedEvent`.          |
+| [DeleteActionUseCase](actions/delete-action-use-case.md) | Deletes a scope action and emits an `ActionDeletedEvent` on success.         |
 
 ### Resource Use Cases
 
-| Use case                                             | Description                                                             |
-|------------------------------------------------------|-------------------------------------------------------------------------|
-| [CreateResourceUseCase](create-resource-use-case.md) | Creates a scope resource and emits a `ResourceCreatedEvent`.            |
-| [EditResourceUseCase](edit-resource-use-case.md)     | Updates a scope resource and emits a `ResourceUpdatedEvent`.            |
-| [DeleteResourceUseCase](delete-resource-use-case.md) | Deletes a scope resource and emits a `ResourceDeletedEvent` on success. |
+| Use case                                                       | Description                                                             |
+|----------------------------------------------------------------|-------------------------------------------------------------------------|
+| [CreateResourceUseCase](resources/create-resource-use-case.md) | Creates a scope resource and emits a `ResourceCreatedEvent`.            |
+| [EditResourceUseCase](resources/edit-resource-use-case.md)     | Updates a scope resource and emits a `ResourceUpdatedEvent`.            |
+| [DeleteResourceUseCase](resources/delete-resource-use-case.md) | Deletes a scope resource and emits a `ResourceDeletedEvent` on success. |
 
 ### Client Use Cases
 
