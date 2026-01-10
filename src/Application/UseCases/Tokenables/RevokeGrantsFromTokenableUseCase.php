@@ -9,6 +9,9 @@ use N3XT0R\LaravelPassportAuthorizationCore\Events\Tokenable\TokenableGrantsRevo
 use N3XT0R\LaravelPassportAuthorizationCore\Services\GrantService;
 use N3XT0R\LaravelPassportAuthorizationCore\Support\Resolver\GrantableTokenableResolver;
 
+/**
+ * Use case to revoke grants from a tokenable entity.
+ */
 readonly class RevokeGrantsFromTokenableUseCase
 {
     public function __construct(

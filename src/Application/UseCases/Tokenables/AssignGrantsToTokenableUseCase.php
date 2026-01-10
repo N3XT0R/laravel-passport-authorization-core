@@ -9,6 +9,9 @@ use N3XT0R\LaravelPassportAuthorizationCore\Events\Tokenable\TokenableGrantsAssi
 use N3XT0R\LaravelPassportAuthorizationCore\Services\GrantService;
 use N3XT0R\LaravelPassportAuthorizationCore\Support\Resolver\GrantableTokenableResolver;
 
+/**
+ * Use case to assign grants to a tokenable entity.
+ */
 readonly class AssignGrantsToTokenableUseCase
 {
     public function __construct(

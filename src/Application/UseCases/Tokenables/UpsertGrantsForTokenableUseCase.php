@@ -9,6 +9,9 @@ use N3XT0R\LaravelPassportAuthorizationCore\Events\Tokenable\TokenableGrantUpser
 use N3XT0R\LaravelPassportAuthorizationCore\Services\GrantService;
 use N3XT0R\LaravelPassportAuthorizationCore\Support\Resolver\GrantableTokenableResolver;
 
+/**
+ * Use case to upsert grants for a tokenable entity.
+ */
 readonly class UpsertGrantsForTokenableUseCase
 {
     public function __construct(
