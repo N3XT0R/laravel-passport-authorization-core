@@ -16,6 +16,12 @@ use N3XT0R\LaravelPassportAuthorizationCore\Tests\TestCase;
 
 final class RepositoryRegistrarTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        config(['passport-authorization-core.cache.enabled' => true]);
+    }
+
     protected function getPackageProviders($app): array
     {
         return [];
