@@ -62,14 +62,20 @@ class RepositoryRegistrar extends BaseRegistrar
         string $decoratorClass,
     ): object {
         $repository = $app->make($repositoryClass);
-        $configCacheEnabled = (bool)config('passport-authorization-core.cache.enabled', false);
 
-        $useCache = $configCacheEnabled || ($params['cache'] ?? false);
+
+        $configCacheEnabled = (bool)config('passport-authorization-core.cache.enabled', false);
+        $cacheParam = $params['cache'] ?? null;
+
+        if ($cacheParam === null) {
+            $useCache = $configCacheEnabled;
+        } else {
+            $useCache = (bool)$cacheParam;
+        }
 
         if (
             !$useCache
             || defined('TESTBENCH_CORE')
-            || $this->app->runningUnitTests()
             || $this->app->environment('testing')
         ) {
             return $repository;
