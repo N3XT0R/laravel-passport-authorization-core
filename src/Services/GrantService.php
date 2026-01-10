@@ -275,11 +275,11 @@ readonly class GrantService
             }
 
             $this->revokeScopeFromTokenable(
-                $tokenable,
-                $scope->resource,
-                $scope->action,
-                $actor,
-                $contextClient
+                tokenable: $tokenable,
+                resourceName: $scope->resource,
+                actionName: $scope->action,
+                actor: $actor,
+                contextClient: $contextClient
             );
         }
 
