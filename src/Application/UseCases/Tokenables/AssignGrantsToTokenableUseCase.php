@@ -12,9 +12,9 @@ use N3XT0R\LaravelPassportAuthorizationCore\Services\GrantService;
 readonly class AssignGrantsToTokenableUseCase
 {
     public function __construct(
-        private OwnerRepository $ownerRepository,
-        private ClientRepository $clientRepository,
-        private GrantService $grantService,
+        protected OwnerRepository $ownerRepository,
+        protected ClientRepository $clientRepository,
+        protected GrantService $grantService,
     ) {
     }
 

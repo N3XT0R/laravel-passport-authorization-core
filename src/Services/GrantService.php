@@ -30,7 +30,7 @@ readonly class GrantService
      * @param string $resourceName
      * @param string $actionName
      * @param Authenticatable|null $actor
-     * @param Client|null $client
+     * @param Client|null $contextClient
      * @return PassportScopeGrant
      */
     public function grantScopeToTokenable(
@@ -38,7 +38,7 @@ readonly class GrantService
         string $resourceName,
         string $actionName,
         ?Authenticatable $actor = null,
-        ?Client $client = null,
+        ?Client $contextClient = null,
     ): PassportScopeGrant {
         $resource = $this->resourceRepository->findByName($resourceName);
         if ($resource === null) {
@@ -54,7 +54,7 @@ readonly class GrantService
             $tokenable,
             $resource->getKey(),
             $action->getKey(),
-            $client?->getKey(),
+            $contextClient?->getKey(),
         );
 
         if ($result && $actor) {
@@ -81,7 +81,7 @@ readonly class GrantService
      * @param string $resourceName
      * @param string $actionName
      * @param Authenticatable|null $actor
-     * @param Client|null $client
+     * @param Client|null $contextClient
      * @return bool
      */
     public function revokeScopeFromTokenable(
@@ -89,7 +89,7 @@ readonly class GrantService
         string $resourceName,
         string $actionName,
         ?Authenticatable $actor = null,
-        ?Client $client = null,
+        ?Client $contextClient = null,
     ): bool {
         $resource = $this->resourceRepository->findByName($resourceName);
         if ($resource === null) {
@@ -115,7 +115,7 @@ readonly class GrantService
                         'type' => $tokenable->getMorphClass(),
                         'id' => $tokenable->getKey(),
                     ],
-                    'client_id' => $client?->getKey(),
+                    'context_client_id' => $contextClient?->getKey(),
                     'revoked_scope' => new Scope($resourceName, $actionName)->toString(),
                 ])
                 ->log('OAuth scope grant revoked from tokenable');
@@ -130,13 +130,14 @@ readonly class GrantService
      * @param HasPassportScopeGrantsInterface $tokenable
      * @param string $resourceName
      * @param string $actionName
+     * @param Client|null $contextClient
      * @return bool
      */
     public function tokenableHasGrant(
         HasPassportScopeGrantsInterface $tokenable,
         string $resourceName,
         string $actionName,
-        ?Client $client = null,
+        ?Client $contextClient = null,
     ): bool {
         $resource = $this->resourceRepository->findByName($resourceName);
         if ($resource === null) {
@@ -152,7 +153,7 @@ readonly class GrantService
             tokenable: $tokenable,
             resourceId: $resource->getKey(),
             actionId: $action->getKey(),
-            clientId: $client?->getKey(),
+            clientId: $contextClient?->getKey(),
         );
     }
 
@@ -160,13 +161,13 @@ readonly class GrantService
      * Check if the tokenable has a grant to a specific scope.
      * @param HasPassportScopeGrantsInterface $tokenable
      * @param string $scopeString
-     * @param Client|null $client
+     * @param Client|null $contextClient
      * @return bool
      */
     public function tokenableHasGrantToScope(
         HasPassportScopeGrantsInterface $tokenable,
         string $scopeString,
-        ?Client $client = null,
+        ?Client $contextClient = null,
     ): bool {
         $scope = Scope::fromString($scopeString);
 
@@ -174,18 +175,24 @@ readonly class GrantService
             $tokenable,
             $scope->resource,
             $scope->action,
-            $client
+            $contextClient
         );
     }
 
     /**
      * Get all grants of the tokenable as scope strings.
      * @param HasPassportScopeGrantsInterface $tokenable
+     * @param Client|null $contextClient
      * @return Collection<string>
      */
-    public function getTokenableGrantsAsScopes(HasPassportScopeGrantsInterface $tokenable): Collection
-    {
-        $grants = $this->scopeGrantRepository->getTokenableGrants($tokenable);
+    public function getTokenableGrantsAsScopes(
+        HasPassportScopeGrantsInterface $tokenable,
+        ?Client $contextClient = null,
+    ): Collection {
+        $grants = $this->scopeGrantRepository->getTokenableGrants(
+            tokenable: $tokenable,
+            clientId: $contextClient?->getKey()
+        );
 
 
         return $grants->map(fn(PassportScopeGrant $grant) => new Scope(
@@ -199,19 +206,25 @@ readonly class GrantService
      * @param HasPassportScopeGrantsInterface&Model $tokenable
      * @param array $scopes
      * @param Authenticatable|null $actor
-     * @param Client|null $client
+     * @param Client|null $contextClient
      * @return void
      */
     public function giveGrantsToTokenable(
         Model&HasPassportScopeGrantsInterface $tokenable,
         array $scopes,
         ?Authenticatable $actor = null,
-        ?Client $client = null,
+        ?Client $contextClient = null,
     ): void {
         foreach ($scopes as $scopeString) {
             $scope = Scope::fromString($scopeString);
 
-            if ($this->tokenableHasGrantToScope($tokenable, $scopeString, $client)) {
+            if (
+                $this->tokenableHasGrantToScope(
+                    tokenable: $tokenable,
+                    scopeString: $scopeString,
+                    contextClient: $contextClient
+                )
+            ) {
                 continue;
             }
 
@@ -221,7 +234,7 @@ readonly class GrantService
                 $scope->resource,
                 $scope->action,
                 $actor,
-                $client
+                $contextClient
             );
         }
 
@@ -233,7 +246,7 @@ readonly class GrantService
                         'type' => $tokenable->getMorphClass(),
                         'id' => $tokenable->getKey(),
                     ],
-                    'client_id' => $client?->getKey(),
+                    'context_client_id' => $contextClient?->getKey(),
                     'granted_scopes' => $scopes,
                 ])
                 ->log('OAuth scope grants given to tokenable');
@@ -244,18 +257,20 @@ readonly class GrantService
      * Revoke multiple grants from the tokenable based on the provided scopes.
      * @param Model&HasPassportScopeGrantsInterface $tokenable
      * @param array $scopes
+     * @param Authenticatable|null $actor
+     * @param Client|null $contextClient
      * @return void
      */
     public function revokeGrantsFromTokenable(
         Model&HasPassportScopeGrantsInterface $tokenable,
         array $scopes,
         ?Authenticatable $actor = null,
-        ?Client $client = null,
+        ?Client $contextClient = null,
     ): void {
         foreach ($scopes as $scopeString) {
             $scope = Scope::fromString($scopeString);
 
-            if (!$this->tokenableHasGrantToScope($tokenable, $scopeString, $client)) {
+            if (!$this->tokenableHasGrantToScope($tokenable, $scopeString, $contextClient)) {
                 continue;
             }
 
@@ -263,7 +278,7 @@ readonly class GrantService
                 $tokenable,
                 $scope->resource,
                 $scope->action,
-                $client
+                $contextClient
             );
         }
 
@@ -275,7 +290,7 @@ readonly class GrantService
                         'type' => $tokenable->getMorphClass(),
                         'id' => $tokenable->getKey(),
                     ],
-                    'client_id' => $client?->getKey(),
+                    'context_client_id' => $contextClient?->getKey(),
                     'revoked_scopes' => $scopes,
                 ])
                 ->log('OAuth scope grants revoked from tokenable');
@@ -287,21 +302,22 @@ readonly class GrantService
      * @param HasPassportScopeGrantsInterface&Model $tokenable
      * @param array $scopes
      * @param Authenticatable|null $actor
+     * @param Client|null $contextClient
      * @return void
      */
     public function upsertGrantsForTokenable(
         Model&HasPassportScopeGrantsInterface $tokenable,
         array $scopes,
         ?Authenticatable $actor = null,
-        ?Client $client = null,
+        ?Client $contextClient = null,
     ): void {
         $existingGrants = $this->getTokenableGrantsAsScopes($tokenable)->toArray();
 
         $scopesToRevoke = array_diff($existingGrants, $scopes);
         $scopesToGrant = array_diff($scopes, $existingGrants);
 
-        $this->revokeGrantsFromTokenable($tokenable, $scopesToRevoke, $client);
-        $this->giveGrantsToTokenable($tokenable, $scopesToGrant, $client);
+        $this->revokeGrantsFromTokenable($tokenable, $scopesToRevoke, $contextClient);
+        $this->giveGrantsToTokenable($tokenable, $scopesToGrant, $contextClient);
 
         if ($actor) {
             activity('oauth')
@@ -311,7 +327,7 @@ readonly class GrantService
                         'type' => $tokenable->getMorphClass(),
                         'id' => $tokenable->getKey(),
                     ],
-                    'client_id' => $client?->getKey(),
+                    'context_client_id' => $contextClient?->getKey(),
                     'upserted_scopes' => $scopes,
                 ])
                 ->log('OAuth scope grants upserted for tokenable');
