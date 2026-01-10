@@ -103,7 +103,14 @@ class ScopeGrantRepository
             ->where('action_id', $actionId);
 
         if ($contextClientId) {
-            $query->where('context_client_id', $contextClientId);
+            /**
+             * @note
+             * backward compatibility: check for both null and specific client ID
+             */
+            $query->where(function (Builder $query) use ($contextClientId) {
+                $query->whereNull('context_client_id')
+                    ->orWhere('context_client_id', $contextClientId);
+            });
         }
 
         return $query->exists();
