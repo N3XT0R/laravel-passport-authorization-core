@@ -13,6 +13,9 @@ use N3XT0R\LaravelPassportAuthorizationCore\Repositories\OwnerRepository;
 use N3XT0R\LaravelPassportAuthorizationCore\Repositories\Scopes\ScopeGrantRepository;
 use N3XT0R\LaravelPassportAuthorizationCore\Services\ClientService;
 
+/**
+ * Use case to save ownership relation between client and owner
+ */
 readonly class SaveOwnershipRelationUseCase
 {
     public function __construct(
