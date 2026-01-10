@@ -43,7 +43,7 @@ final class RepositoryRegistrarTest extends TestCase
     {
         $this->app->make(RepositoryRegistrar::class)->register();
 
-        $repository = $this->app->make(ActionRepositoryContract::class);
+        $repository = $this->app->make(ActionRepositoryContract::class, ['cache' => false]);
 
         self::assertInstanceOf(ActionRepository::class, $repository);
     }
@@ -52,7 +52,7 @@ final class RepositoryRegistrarTest extends TestCase
     {
         $this->app->make(RepositoryRegistrar::class)->register();
 
-        $repository = $this->app->make(ResourceRepositoryContract::class);
+        $repository = $this->app->make(ResourceRepositoryContract::class, ['cache' => false]);
 
         self::assertInstanceOf(ResourceRepository::class, $repository);
     }
