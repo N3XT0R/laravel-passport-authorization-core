@@ -43,6 +43,6 @@ class PassportScopeGrantTest extends DatabaseTestCase
         $this->assertTrue($grant->tokenable->is($tokenable));
         $this->assertTrue($grant->resource->is($resource));
         $this->assertTrue($grant->action->is($action));
-        $this->assertSame('profile.update', $grant->toScopeString());
+        $this->assertSame('profile:update', $grant->toScopeString());
     }
 }
