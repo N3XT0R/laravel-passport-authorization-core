@@ -10,6 +10,7 @@ use N3XT0R\LaravelPassportAuthorizationCore\Exceptions\Domain\Owners\OwnerNotExi
 use N3XT0R\LaravelPassportAuthorizationCore\Models\Passport\Client;
 use N3XT0R\LaravelPassportAuthorizationCore\Repositories\ClientRepository;
 use N3XT0R\LaravelPassportAuthorizationCore\Repositories\OwnerRepository;
+use N3XT0R\LaravelPassportAuthorizationCore\Repositories\Scopes\ScopeGrantRepository;
 use N3XT0R\LaravelPassportAuthorizationCore\Services\ClientService;
 
 readonly class SaveOwnershipRelationUseCase
@@ -17,7 +18,8 @@ readonly class SaveOwnershipRelationUseCase
     public function __construct(
         protected ClientRepository $clientRepository,
         protected OwnerRepository $ownerRepository,
-        protected ClientService $clientService
+        protected ClientService $clientService,
+        protected ScopeGrantRepository $scopeGrantRepository,
     ) {
     }
 
@@ -44,6 +46,11 @@ readonly class SaveOwnershipRelationUseCase
         if ($owner === null) {
             $type = $this->ownerRepository->getOwnerModelClass();
             throw new OwnerNotExistsException($type, $ownerId);
+        }
+
+        $currentOwner = $client->owner;
+        if ($currentOwner) {
+            $this->scopeGrantRepository->deleteAllGrantsForTokenable($currentOwner);
         }
 
         $this->clientService->changeOwnerOfClient($client, $owner, $actor);
