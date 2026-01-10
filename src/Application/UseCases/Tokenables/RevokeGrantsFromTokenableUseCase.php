@@ -35,10 +35,10 @@ readonly class RevokeGrantsFromTokenableUseCase
         );
 
         TokenableGrantsRevokedEvent::dispatch(
-            model: $context->tokenable,
-            scopes: $scopes,
-            contextClient: $context->contextClient,
-            actor: $actor
+            $context->tokenable,
+            $scopes,
+            $context->contextClient,
+            $actor
         );
     }
 }
