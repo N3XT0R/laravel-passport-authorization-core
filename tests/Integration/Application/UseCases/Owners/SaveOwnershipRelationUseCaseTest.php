@@ -39,6 +39,6 @@ final class SaveOwnershipRelationUseCaseTest extends DatabaseTestCase
 
         $this->expectException(OwnerNotExistsException::class);
 
-        $this->useCase->execute($client->getKey(), 123456);
+        $this->useCase->execute($client->getKey(), time());
     }
 }
