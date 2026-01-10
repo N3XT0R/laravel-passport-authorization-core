@@ -6,6 +6,7 @@ namespace N3XT0R\LaravelPassportAuthorizationCore\Application\UseCases\Tokenable
 
 use Illuminate\Support\Collection;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\Concerns\HasPassportScopeGrantsInterface;
+use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeGrant;
 use N3XT0R\LaravelPassportAuthorizationCore\Repositories\Scopes\ScopeGrantRepository;
 
 /**
@@ -18,6 +19,10 @@ class GetGrantsForTokenableUseCase
     ) {
     }
 
+    /**
+     * @param HasPassportScopeGrantsInterface $tokenable
+     * @return Collection<PassportScopeGrant>
+     */
     public function execute(HasPassportScopeGrantsInterface $tokenable): Collection
     {
         return $this->scopeGrantRepository->getGrantsForTokenable($tokenable);

@@ -232,4 +232,18 @@ class ScopeGrantRepository
             ->with(['resource', 'action', 'contextClient'])
             ->get();
     }
+
+    /**
+     * Get all grants for a given tokenable type and ID.
+     * @param string $type
+     * @param int|string $id
+     * @return Collection<PassportScopeGrant>
+     */
+    public function getGrantsForTokenableByTypeAndId(string $type, int|string $id): Collection
+    {
+        return PassportScopeGrant::where('tokenable_type', $type)
+            ->where('tokenable_id', $id)
+            ->with(['resource', 'action', 'contextClient'])
+            ->get();
+    }
 }

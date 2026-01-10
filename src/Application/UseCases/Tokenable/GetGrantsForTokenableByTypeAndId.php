@@ -9,9 +9,9 @@ use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeGrant;
 use N3XT0R\LaravelPassportAuthorizationCore\Repositories\Scopes\ScopeGrantRepository;
 
 /**
- * Use case to get all scope grants.
+ * Use case to get all scope grants for a given tokenable type and ID.
  */
-class GetAllGrantsUseCase
+class GetGrantsForTokenableByTypeAndId
 {
     public function __construct(
         protected ScopeGrantRepository $scopeGrantRepository
@@ -19,10 +19,15 @@ class GetAllGrantsUseCase
     }
 
     /**
+     * @param string $tokenableType
+     * @param int|string $tokenableId
      * @return Collection<PassportScopeGrant>
      */
-    public function execute(): Collection
+    public function execute(string $tokenableType, int|string $tokenableId): Collection
     {
-        return $this->scopeGrantRepository->getAllGrants();
+        return $this->scopeGrantRepository->getGrantsForTokenableByTypeAndId(
+            $tokenableType,
+            $tokenableId
+        );
     }
 }
