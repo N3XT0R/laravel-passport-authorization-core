@@ -275,10 +275,11 @@ readonly class GrantService
             }
 
             $this->revokeScopeFromTokenable(
-                $tokenable,
-                $scope->resource,
-                $scope->action,
-                $contextClient
+                tokenable: $tokenable,
+                resourceName: $scope->resource,
+                actionName: $scope->action,
+                actor: $actor,
+                contextClient: $contextClient
             );
         }
 
@@ -316,8 +317,8 @@ readonly class GrantService
         $scopesToRevoke = array_diff($existingGrants, $scopes);
         $scopesToGrant = array_diff($scopes, $existingGrants);
 
-        $this->revokeGrantsFromTokenable($tokenable, $scopesToRevoke, $contextClient);
-        $this->giveGrantsToTokenable($tokenable, $scopesToGrant, $contextClient);
+        $this->revokeGrantsFromTokenable($tokenable, $scopesToRevoke, $actor, $contextClient);
+        $this->giveGrantsToTokenable($tokenable, $scopesToGrant, $actor, $contextClient);
 
         if ($actor) {
             activity('oauth')
