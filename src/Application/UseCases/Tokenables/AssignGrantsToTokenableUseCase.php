@@ -6,6 +6,7 @@ namespace N3XT0R\LaravelPassportAuthorizationCore\Application\UseCases\Tokenable
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use N3XT0R\LaravelPassportAuthorizationCore\Exceptions\Domain\ActiveClientNotExistsException;
+use N3XT0R\LaravelPassportAuthorizationCore\Exceptions\Domain\Owners\OwnerNotExistsException;
 use N3XT0R\LaravelPassportAuthorizationCore\Repositories\ClientRepository;
 use N3XT0R\LaravelPassportAuthorizationCore\Repositories\OwnerRepository;
 use N3XT0R\LaravelPassportAuthorizationCore\Services\GrantService;
@@ -33,7 +34,8 @@ readonly class AssignGrantsToTokenableUseCase
 
         $owner = $this->ownerRepository->findByKey($ownerId);
         if (!$owner) {
-            throw new ActiveClientNotExistsException($ownerId);
+            $ownerModelClass = $this->ownerRepository->getOwnerModelClass();
+            throw new OwnerNotExistsException($ownerModelClass, $ownerId);
         }
     }
 }
