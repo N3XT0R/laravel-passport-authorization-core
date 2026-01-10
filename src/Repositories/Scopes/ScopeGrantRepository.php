@@ -129,6 +129,7 @@ class ScopeGrantRepository
 
         if ($clientId) {
             /**
+             * @note
              * backward compatibility: check for both null and specific client ID
              */
             $query->where(function (Builder $query) use ($clientId) {
