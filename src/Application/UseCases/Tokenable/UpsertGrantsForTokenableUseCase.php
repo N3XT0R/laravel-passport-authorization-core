@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\LaravelPassportAuthorizationCore\Application\UseCases\Tokenables;
+namespace N3XT0R\LaravelPassportAuthorizationCore\Application\UseCases\Tokenable;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use N3XT0R\LaravelPassportAuthorizationCore\Events\Tokenable\TokenableGrantUpsertedEvent;

@@ -28,7 +28,7 @@ Use this when you need to add grants to a tokenable for a given client context w
 ## Example
 
 ```php
-use N3XT0R\LaravelPassportAuthorizationCore\Application\UseCases\Tokenables\AssignGrantsToTokenableUseCase;
+use N3XT0R\LaravelPassportAuthorizationCore\Application\UseCases\Tokenable\AssignGrantsToTokenableUseCase;
 
 $useCase = app(AssignGrantsToTokenableUseCase::class);
 

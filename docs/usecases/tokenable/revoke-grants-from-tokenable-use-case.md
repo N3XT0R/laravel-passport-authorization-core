@@ -28,7 +28,7 @@ Use this when you need to remove specific grants from a tokenable for a given cl
 ## Example
 
 ```php
-use N3XT0R\LaravelPassportAuthorizationCore\Application\UseCases\Tokenables\RevokeGrantsFromTokenableUseCase;
+use N3XT0R\LaravelPassportAuthorizationCore\Application\UseCases\Tokenable\RevokeGrantsFromTokenableUseCase;
 
 $useCase = app(RevokeGrantsFromTokenableUseCase::class);
 

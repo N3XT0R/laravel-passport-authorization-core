@@ -8,7 +8,7 @@ use App\Models\PassportScopeGrantUser;
 use App\Models\User;
 use Illuminate\Support\Facades\Event;
 use Laravel\Passport\Client;
-use N3XT0R\LaravelPassportAuthorizationCore\Application\UseCases\Tokenables\RevokeGrantsFromTokenableUseCase;
+use N3XT0R\LaravelPassportAuthorizationCore\Application\UseCases\Tokenable\RevokeGrantsFromTokenableUseCase;
 use N3XT0R\LaravelPassportAuthorizationCore\Events\Tokenable\TokenableGrantsRevokedEvent;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeAction;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeGrant;

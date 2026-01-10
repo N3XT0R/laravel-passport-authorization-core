@@ -29,7 +29,7 @@ grants and removing unlisted ones).
 ## Example
 
 ```php
-use N3XT0R\LaravelPassportAuthorizationCore\Application\UseCases\Tokenables\UpsertGrantsForTokenableUseCase;
+use N3XT0R\LaravelPassportAuthorizationCore\Application\UseCases\Tokenable\UpsertGrantsForTokenableUseCase;
 
 $useCase = app(UpsertGrantsForTokenableUseCase::class);
 

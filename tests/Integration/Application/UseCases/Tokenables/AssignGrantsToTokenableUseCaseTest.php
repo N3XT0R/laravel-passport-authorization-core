@@ -8,7 +8,7 @@ use App\Models\PassportScopeGrantUser;
 use App\Models\User;
 use Illuminate\Support\Facades\Event;
 use Laravel\Passport\Client;
-use N3XT0R\LaravelPassportAuthorizationCore\Application\UseCases\Tokenables\AssignGrantsToTokenableUseCase;
+use N3XT0R\LaravelPassportAuthorizationCore\Application\UseCases\Tokenable\AssignGrantsToTokenableUseCase;
 use N3XT0R\LaravelPassportAuthorizationCore\Events\Tokenable\TokenableGrantsAssignedEvent;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeAction;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeResource;
@@ -61,15 +61,18 @@ final class AssignGrantsToTokenableUseCaseTest extends DatabaseTestCase
             'context_client_id' => $contextClient->getKey(),
         ]);
 
-        Event::assertDispatched(TokenableGrantsAssignedEvent::class, function (TokenableGrantsAssignedEvent $event) use (
-            $owner,
-            $contextClient,
-            $actor
-        ): bool {
-            return $event->model->is($owner)
-                && $event->contextClient?->is($contextClient)
-                && $event->actor?->is($actor)
-                && $event->scopes === ['projects:read', 'projects:update'];
-        });
+        Event::assertDispatched(
+            TokenableGrantsAssignedEvent::class,
+            function (TokenableGrantsAssignedEvent $event) use (
+                $owner,
+                $contextClient,
+                $actor
+            ): bool {
+                return $event->model->is($owner)
+                    && $event->contextClient?->is($contextClient)
+                    && $event->actor?->is($actor)
+                    && $event->scopes === ['projects:read', 'projects:update'];
+            }
+        );
     }
 }
