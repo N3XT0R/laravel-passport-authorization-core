@@ -55,7 +55,7 @@ readonly class CreateClientUseCase
             tokenable: $client,
             scopes: $scopes,
             actor: $actor,
-            client: $client
+            contextClient: $client
         );
 
         OAuthClientCreatedEvent::dispatch($client, $actor);

@@ -65,7 +65,7 @@ readonly class GrantService
                         'type' => $tokenable->getMorphClass(),
                         'id' => $tokenable->getKey(),
                     ],
-                    'client_id' => $client?->getKey(),
+                    'context_client_id' => $contextClient?->getKey(),
                     'granted_scope' => new Scope($resourceName, $actionName)->toString(),
                 ])
                 ->log('OAuth scope grant given to tokenable');
