@@ -12,7 +12,7 @@ use N3XT0R\LaravelPassportAuthorizationCore\Repositories\Scopes\ScopeGrantReposi
 readonly class CleanUpUseCase
 {
     public function __construct(
-        private ScopeGrantRepository $scopeGrantRepository,
+        protected ScopeGrantRepository $scopeGrantRepository,
     ) {
     }
 

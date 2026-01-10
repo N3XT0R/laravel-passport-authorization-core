@@ -16,8 +16,8 @@ use N3XT0R\LaravelPassportAuthorizationCore\Services\ClientService;
 readonly class DeleteClientUseCase
 {
     public function __construct(
-        private ClientService $clientService,
-        private ScopeGrantRepository $scopeGrantRepository
+        protected ClientService $clientService,
+        protected ScopeGrantRepository $scopeGrantRepository
     ) {
     }
 

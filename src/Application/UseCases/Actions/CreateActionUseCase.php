@@ -14,7 +14,7 @@ use N3XT0R\LaravelPassportAuthorizationCore\Services\ActionService;
  */
 readonly class CreateActionUseCase
 {
-    public function __construct(private ActionService $actionService)
+    public function __construct(protected ActionService $actionService)
     {
     }
 

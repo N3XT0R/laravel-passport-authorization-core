@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2025-01-09
+
+### Changed
+
+- Changed constructor property visibility from `private` to `protected` to allow safe inheritance and extension of core
+  classes.
+
 ## [1.0.0] - 2025-01-07
 
 ### Added

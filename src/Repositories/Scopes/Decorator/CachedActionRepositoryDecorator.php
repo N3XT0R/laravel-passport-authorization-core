@@ -18,7 +18,7 @@ class CachedActionRepositoryDecorator extends BaseCachedRepositoryDecorator impl
     ];
 
     public function __construct(
-        private readonly ActionRepositoryContract $innerRepository,
+        protected readonly ActionRepositoryContract $innerRepository,
     ) {
     }
 

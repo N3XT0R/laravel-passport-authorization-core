@@ -10,8 +10,8 @@ use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeResource;
 readonly class ScopeName
 {
     private function __construct(
-        private string $value,
-        private ?string $description = null,
+        protected string $value,
+        protected ?string $description = null,
     ) {
     }
 

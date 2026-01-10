@@ -14,7 +14,7 @@ use N3XT0R\LaravelPassportAuthorizationCore\Services\ResourceService;
  */
 readonly class CreateResourceUseCase
 {
-    public function __construct(private ResourceService $resourceService)
+    public function __construct(protected ResourceService $resourceService)
     {
     }
 

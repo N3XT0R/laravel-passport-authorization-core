@@ -20,9 +20,9 @@ use N3XT0R\LaravelPassportAuthorizationCore\Services\GrantService;
 readonly class CreateClientUseCase
 {
     public function __construct(
-        private OwnerRepository $ownerRepository,
-        private ClientService $clientService,
-        private GrantService $grantService,
+        protected OwnerRepository $ownerRepository,
+        protected ClientService $clientService,
+        protected GrantService $grantService,
     ) {
     }
 
