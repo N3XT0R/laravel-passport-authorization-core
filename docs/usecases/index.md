@@ -36,14 +36,21 @@ a single application-level operation and is intended to be called from controlle
 | [ClearCacheUseCase](clear-cache-use-case.md) | Clears the scope registry cache. |
 | [CleanUpUseCase](clean-up-use-case.md)       | Removes orphaned scope grants.   |
 
+### Tokenable Use Cases
+
 | Use case                                                                     | Description                                                          |
 |------------------------------------------------------------------------------|----------------------------------------------------------------------|
-| [GetAllowedGrantTypeOptions](get-allowed-grant-type-options.md)              | Returns display labels for allowed grant types.                      |
-| [GetAllOwnersUseCase](get-all-owners-use-case.md)                            | Fetches all owner records.                                           |
-| [GetAllOwnersRelationshipUseCase](get-all-owners-relationship-use-case.md)   | Fetches owners as key/value relationship options.                    |
-| [SaveOwnershipRelationUseCase](save-ownership-relation-use-case.md)          | Reassigns a client to a new owner.                                   |
 | [AssignGrantsToTokenableUseCase](assign-grants-to-tokenable-use-case.md)     | Assigns scope grants to a tokenable for a specific client context.   |
 | [RevokeGrantsFromTokenableUseCase](revoke-grants-from-tokenable-use-case.md) | Revokes scope grants from a tokenable for a specific client context. |
 | [UpsertGrantsForTokenableUseCase](upsert-grants-for-tokenable-use-case.md)   | Upserts scope grants for a tokenable for a specific client context.  |
+
+### Other Use Cases
+
+| Use case                                                                   | Description                                       |
+|----------------------------------------------------------------------------|---------------------------------------------------|
+| [GetAllowedGrantTypeOptions](get-allowed-grant-type-options.md)            | Returns display labels for allowed grant types.   |
+| [GetAllOwnersUseCase](get-all-owners-use-case.md)                          | Fetches all owner records.                        |
+| [GetAllOwnersRelationshipUseCase](get-all-owners-relationship-use-case.md) | Fetches owners as key/value relationship options. |
+| [SaveOwnershipRelationUseCase](save-ownership-relation-use-case.md)        | Reassigns a client to a new owner.                |
 
  
