@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace N3XT0R\LaravelPassportAuthorizationCore\Tests\Integration\Application\UseCases\Tokenables;
 
+use App\Models\PassportScopeGrantUser;
 use N3XT0R\LaravelPassportAuthorizationCore\Application\UseCases\Tokenable\GetAllGrantsUseCase;
+use N3XT0R\LaravelPassportAuthorizationCore\Models\Passport\Client;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeGrant;
 use N3XT0R\LaravelPassportAuthorizationCore\Tests\DatabaseTestCase;
 
@@ -21,8 +23,12 @@ final class GetAllGrantsUseCaseTest extends DatabaseTestCase
 
     public function testExecuteReturnsAllGrants(): void
     {
-        $firstGrant = PassportScopeGrant::factory()->create();
-        $secondGrant = PassportScopeGrant::factory()->create();
+        $firstGrant = PassportScopeGrant::factory()
+            ->withTokenable(Client::factory()->create())
+            ->create();
+        $secondGrant = PassportScopeGrant::factory()
+            ->withTokenable(PassportScopeGrantUser::factory()->create())
+            ->create();
 
         $grants = $this->useCase->execute();
 
