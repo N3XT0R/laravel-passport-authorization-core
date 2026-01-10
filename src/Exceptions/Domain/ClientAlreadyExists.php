@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace N3XT0R\LaravelPassportAuthorizationCore\Exceptions\Domain;
 
 use DomainException;
-use N3XT0R\LaravelPassportAuthorizationCore\Exceptions\Contracts\DomainExceptionInterface;
 
 class ClientAlreadyExists extends DomainException implements DomainExceptionInterface
 {
