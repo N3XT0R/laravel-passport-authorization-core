@@ -153,7 +153,7 @@ readonly class GrantService
             tokenable: $tokenable,
             resourceId: $resource->getKey(),
             actionId: $action->getKey(),
-            clientId: $contextClient?->getKey(),
+            contextClientId: $contextClient?->getKey(),
         );
     }
 
@@ -191,7 +191,7 @@ readonly class GrantService
     ): Collection {
         $grants = $this->scopeGrantRepository->getTokenableGrants(
             tokenable: $tokenable,
-            clientId: $contextClient?->getKey()
+            contextClientId: $contextClient?->getKey()
         );
 
 
