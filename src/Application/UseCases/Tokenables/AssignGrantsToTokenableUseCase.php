@@ -32,7 +32,8 @@ readonly class AssignGrantsToTokenableUseCase
         }
 
         $owner = $this->ownerRepository->findByKey($ownerId);
-
-        $this->clientRepository->findForUser();
+        if (!$owner) {
+            throw new ActiveClientNotExistsException($ownerId);
+        }
     }
 }
