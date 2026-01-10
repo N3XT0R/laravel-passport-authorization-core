@@ -40,7 +40,7 @@ class Client extends PassportClient implements HasPassportScopeGrantsInterface
         return $this->hasMany(
             PassportScopeGrant::class,
             'context_client_id',
-            'id'
+            $this->getKeyName()
         );
     }
 }

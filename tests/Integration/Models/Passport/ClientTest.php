@@ -51,4 +51,19 @@ final class ClientTest extends DatabaseTestCase
         self::assertTrue($client->hasScope('profile:read'));
         self::assertFalse($client->hasScope('profile:write'));
     }
+
+    public function testContextClientRelation(): void
+    {
+        $client = Client::factory()->create();
+        $contextClient = Client::factory()->create();
+        $grant = PassportScopeGrant::factory()
+            ->withTokenable($client)
+            ->withContextClient($contextClient)
+            ->create();
+
+        $collection = $contextClient->contextScopeGrants;
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($grant->is($collection->first()));
+    }
 }

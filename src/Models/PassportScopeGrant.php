@@ -61,7 +61,11 @@ class PassportScopeGrant extends Model
      */
     public function contextClient(): BelongsTo
     {
-        return $this->belongsTo(Passport::clientModel(), 'context_client_id', 'id');
+        return $this->belongsTo(
+            Passport::clientModel(),
+            'context_client_id',
+            'id'
+        );
     }
 
     /**
