@@ -55,6 +55,38 @@ final class EditClientUseCaseTest extends DatabaseTestCase
         Event::assertDispatched(OAuthClientUpdatedEvent::class);
     }
 
+    public function testExecuteUpdatesClientAndOwnerWithRevokingWithOwnerId(): void
+    {
+        $client = Client::factory()->create([
+            'name' => 'Before Edit',
+            'redirect_uris' => ['https://before.example'],
+            'revoked' => false,
+        ]);
+
+        $owner = User::factory()->create();
+
+        $updated = $this->useCase->execute($client, [
+            'name' => 'After Edit',
+            'redirect_uris' => ['https://after.example'],
+            'owner' => $owner->getKey(),
+            'scopes' => [],
+            'revoked' => true,
+        ]);
+
+        self::assertSame('After Edit', $updated->name);
+        self::assertSame(['https://after.example'], $updated->redirect_uris);
+        self::assertTrue($updated->revoked);
+        self::assertSame($owner->getKey(), $updated->owner?->getKey());
+        $this->assertDatabaseHas($client->getTable(), [
+            'id' => $client->getKey(),
+            'name' => 'After Edit',
+            'revoked' => true,
+        ]);
+
+        Event::assertDispatched(OAuthClientRevokedEvent::class);
+        Event::assertDispatched(OAuthClientUpdatedEvent::class);
+    }
+
     public function testExecuteUpdatesClientAndOwnerWithoutRevoking(): void
     {
         $client = Client::factory()->create([
