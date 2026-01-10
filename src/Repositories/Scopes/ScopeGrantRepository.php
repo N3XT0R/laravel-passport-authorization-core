@@ -220,4 +220,16 @@ class ScopeGrantRepository
             'contextClient'
         ])->get();
     }
+
+    /**
+     * Get all grants for a given tokenable model.
+     * @param HasPassportScopeGrantsInterface $tokenable
+     * @return Collection
+     */
+    public function getGrantsForTokenable(HasPassportScopeGrantsInterface $tokenable): Collection
+    {
+        return $tokenable->passportScopeGrants()
+            ->with(['resource', 'action', 'contextClient'])
+            ->get();
+    }
 }
