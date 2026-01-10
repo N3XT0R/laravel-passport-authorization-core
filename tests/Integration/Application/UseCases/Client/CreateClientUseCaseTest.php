@@ -47,4 +47,29 @@ final class CreateClientUseCaseTest extends DatabaseTestCase
 
         Event::assertDispatched(OAuthClientCreatedEvent::class);
     }
+
+    public function testExecuteCreatesClientWithOwnerId(): void
+    {
+        $owner = User::factory()->create();
+
+        $result = $this->useCase->execute([
+            'name' => 'Integration Client',
+            'redirect_uris' => ['https://example.test/callback'],
+            'grant_type' => OAuthClientType::PERSONAL_ACCESS->value,
+            'owner' => $owner->getKey(),
+            'scopes' => [],
+        ]);
+
+        self::assertInstanceOf(Client::class, $result->client);
+        self::assertNotEmpty($result->plainSecret);
+        self::assertSame('Integration Client', $result->client->name);
+        self::assertSame($owner->getKey(), $result->client->owner?->getKey());
+
+        $this->assertDatabaseHas($result->client->getTable(), [
+            'id' => $result->client->getKey(),
+            'name' => 'Integration Client',
+        ]);
+
+        Event::assertDispatched(OAuthClientCreatedEvent::class);
+    }
 }
