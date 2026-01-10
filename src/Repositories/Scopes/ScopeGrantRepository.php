@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N3XT0R\LaravelPassportAuthorizationCore\Repositories\Scopes;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\Concerns\HasPassportScopeGrantsInterface;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeGrant;
@@ -113,6 +114,7 @@ class ScopeGrantRepository
      * @param HasPassportScopeGrantsInterface $tokenable
      * @param int $resourceId
      * @param int $actionId
+     * @param string|int|null $clientId
      * @return bool
      */
     public function tokenableHasGrant(
@@ -124,9 +126,12 @@ class ScopeGrantRepository
         $query = $tokenable->passportScopeGrants()
             ->where('resource_id', $resourceId)
             ->where('action_id', $actionId);
-        
+
         if ($clientId) {
-            $query->where('context_client_id', $clientId);
+            $query->where(function (Builder $query) use ($clientId) {
+                $query->whereNull('context_client_id')
+                    ->orWhere('context_client_id', $clientId);
+            });
         }
 
         return $query->exists();
