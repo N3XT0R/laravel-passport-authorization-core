@@ -17,13 +17,21 @@ readonly class OwnerRepository
     }
 
     /**
+     * Get the owner model class.
+     * @return class-string<Model&OAuthenticatable>
+     */
+    public function getOwnerModelClass(): string
+    {
+        return $this->configRepository->getOwnerModel();
+    }
+
+    /**
      * Get the base query for the owner model.
      * @return Builder
      */
     private function getBaseQuery(): Builder
     {
-        /** @var class-string<Model&OAuthenticatable> $modelClass */
-        $modelClass = $this->configRepository->getOwnerModel();
+        $modelClass = $this->getOwnerModelClass();
         return $modelClass::query();
     }
 

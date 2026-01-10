@@ -6,6 +6,7 @@ namespace N3XT0R\LaravelPassportAuthorizationCore\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Passport\Client;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeAction;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeGrant;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeResource;
@@ -29,6 +30,15 @@ class PassportScopeGrantFactory extends Factory
             return [
                 'tokenable_type' => get_class($model),
                 'tokenable_id' => $model->getKey(),
+            ];
+        });
+    }
+
+    public function withContextClient(Client $client): static
+    {
+        return $this->state(function (array $attributes) use ($client) {
+            return [
+                'context_client_id' => $client->getKey(),
             ];
         });
     }

@@ -6,7 +6,7 @@ namespace N3XT0R\LaravelPassportAuthorizationCore\Exceptions\Domain;
 
 use DomainException;
 
-class ClientAlreadyExists extends DomainException
+class ClientAlreadyExists extends DomainException implements DomainExceptionInterface
 {
     public function __construct(string $name)
     {

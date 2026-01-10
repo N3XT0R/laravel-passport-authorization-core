@@ -61,15 +61,19 @@ class PassportScopeGrant extends Model
      */
     public function contextClient(): BelongsTo
     {
-        return $this->belongsTo(Passport::clientModel(), 'context_client_id', 'id');
+        return $this->belongsTo(
+            Passport::clientModel(),
+            'context_client_id',
+            'id'
+        );
     }
 
     /**
-     * Normalized Passport scope string (videos.read)
+     * Normalized Passport scope string (videos:read)
      * @return string
      */
     public function toScopeString(): string
     {
-        return "{$this->resource->name}.{$this->action->name}";
+        return "{$this->resource->name}:{$this->action->name}";
     }
 }

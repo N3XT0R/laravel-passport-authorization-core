@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added `context_client_id` column to the `passport_scope_grants` table to explicitly
+  associate scope grants with an OAuth client context.
+- Enabled client-scoped authorization grants for all grant types where a tokenable
+  (e.g. user or service account) acts in the context of a specific client.
+- Improved authorization clarity and auditability by making client context an
+  explicit part of scope grant assignments.
+- Introduced `GrantableTokenableResolver` to centralize resolution and validation of
+  grantable tokenables and their active client context.
+- Added `GrantableTokenableContext` DTO to represent resolved authorization context
+  in a typed, explicit form.
+- Added domain events for tokenable grant lifecycle:
+    - `TokenableGrantsAssigned`
+    - `TokenableGrantsRevoked`
+    - `TokenableGrantsUpserted`
+- Added application use cases for managing tokenable grants:
+    - assign grants to tokenables
+    - revoke grants from tokenables
+    - upsert grants for tokenables
+- Established a consistent, event-driven authorization workflow for tokenable grant
+  changes, enabling auditability and external integration.
+
+### Fixed
+
+- Fixed wrong normalization on `PassportScopeGrant::toScopeString` incorrect scope strings like `resource.` instead of
+  `resource:`.
+
 ## [1.1.0] - 2025-01-09
 
 ### Changed

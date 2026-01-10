@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace N3XT0R\LaravelPassportAuthorizationCore\Application\UseCases\Tokenables;
 
 use Illuminate\Contracts\Auth\Authenticatable;
-use N3XT0R\LaravelPassportAuthorizationCore\Events\Tokenable\TokenableGrantsAssignedEvent;
+use N3XT0R\LaravelPassportAuthorizationCore\Events\Tokenable\TokenableGrantsRevokedEvent;
 use N3XT0R\LaravelPassportAuthorizationCore\Services\GrantService;
 use N3XT0R\LaravelPassportAuthorizationCore\Support\Resolver\GrantableTokenableResolver;
 
 /**
- * Use case to assign grants to a tokenable entity.
+ * Use case to revoke grants from a tokenable entity.
  */
-readonly class AssignGrantsToTokenableUseCase
+readonly class RevokeGrantsFromTokenableUseCase
 {
     public function __construct(
         protected GrantableTokenableResolver $grantableTokenableResolver,
@@ -27,15 +27,14 @@ readonly class AssignGrantsToTokenableUseCase
         ?Authenticatable $actor = null
     ): void {
         $context = $this->grantableTokenableResolver->resolve($ownerId, $contextClientId);
-
-        $this->grantService->giveGrantsToTokenable(
+        $this->grantService->revokeGrantsFromTokenable(
             tokenable: $context->tokenable,
             scopes: $scopes,
             actor: $actor,
             contextClient: $context->contextClient
         );
 
-        TokenableGrantsAssignedEvent::dispatch(
+        TokenableGrantsRevokedEvent::dispatch(
             $context->tokenable,
             $scopes,
             $context->contextClient,
