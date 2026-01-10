@@ -68,6 +68,30 @@ final class GrantServiceTest extends DatabaseTestCase
         ]);
     }
 
+    public function testGrantScopeToTokenableThrowsWhenResourceMissing(): void
+    {
+        $client = Client::factory()->create();
+
+        PassportScopeAction::factory()->create(['name' => 'read']);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage("Resource 'missing' not found.");
+
+        $this->service->grantScopeToTokenable($client, 'missing', 'read');
+    }
+
+    public function testGrantScopeToTokenableThrowsWhenActionMissing(): void
+    {
+        $client = Client::factory()->create();
+
+        PassportScopeResource::factory()->create(['name' => 'users']);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage("Action 'missing' not found.");
+
+        $this->service->grantScopeToTokenable($client, 'users', 'missing');
+    }
+
     public function testRevokeScopeFromTokenable(): void
     {
         $client = Client::factory()->create();
@@ -97,6 +121,54 @@ final class GrantServiceTest extends DatabaseTestCase
         ]);
     }
 
+    public function testRevokeScopeFromTokenableReturnsFalseWhenGrantMissing(): void
+    {
+        $actor = User::factory()->create();
+        $client = Client::factory()->create();
+
+        PassportScopeResource::factory()->create(['name' => 'users']);
+        PassportScopeAction::factory()->create(['name' => 'delete']);
+
+        $result = $this->service->revokeScopeFromTokenable(
+            $client,
+            'users',
+            'delete',
+            $actor
+        );
+
+        self::assertFalse($result);
+
+        $this->assertDatabaseMissing('activity_log', [
+            'log_name' => 'oauth',
+            'causer_id' => $actor->getKey(),
+            'description' => 'OAuth scope grant revoked from tokenable',
+        ]);
+    }
+
+    public function testRevokeScopeFromTokenableThrowsWhenResourceMissing(): void
+    {
+        $client = Client::factory()->create();
+
+        PassportScopeAction::factory()->create(['name' => 'delete']);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage("Resource 'missing' not found.");
+
+        $this->service->revokeScopeFromTokenable($client, 'missing', 'delete');
+    }
+
+    public function testRevokeScopeFromTokenableThrowsWhenActionMissing(): void
+    {
+        $client = Client::factory()->create();
+
+        PassportScopeResource::factory()->create(['name' => 'users']);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage("Action 'missing' not found.");
+
+        $this->service->revokeScopeFromTokenable($client, 'users', 'missing');
+    }
+
     public function testTokenableHasGrant(): void
     {
         $client = Client::factory()->create();
@@ -120,6 +192,28 @@ final class GrantServiceTest extends DatabaseTestCase
         );
     }
 
+    public function testTokenableHasGrantReturnsFalseWhenResourceMissing(): void
+    {
+        $client = Client::factory()->create();
+
+        PassportScopeAction::factory()->create(['name' => 'read']);
+
+        self::assertFalse(
+            $this->service->tokenableHasGrant($client, 'missing', 'read')
+        );
+    }
+
+    public function testTokenableHasGrantReturnsFalseWhenActionMissing(): void
+    {
+        $client = Client::factory()->create();
+
+        PassportScopeResource::factory()->create(['name' => 'projects']);
+
+        self::assertFalse(
+            $this->service->tokenableHasGrant($client, 'projects', 'missing')
+        );
+    }
+
     public function testTokenableHasGrantToScope(): void
     {
         $client = Client::factory()->create();
@@ -131,6 +225,17 @@ final class GrantServiceTest extends DatabaseTestCase
 
         self::assertTrue(
             $this->service->tokenableHasGrantToScope($client, 'users:read')
+        );
+    }
+
+    public function testTokenableHasGrantToScopeReturnsFalseWhenResourceMissing(): void
+    {
+        $client = Client::factory()->create();
+
+        PassportScopeAction::factory()->create(['name' => 'read']);
+
+        self::assertFalse(
+            $this->service->tokenableHasGrantToScope($client, 'missing:read')
         );
     }
 
@@ -174,6 +279,21 @@ final class GrantServiceTest extends DatabaseTestCase
 
         self::assertCount(
             2,
+            PassportScopeGrant::where('tokenable_id', $client->getKey())->get()
+        );
+    }
+
+    public function testRevokeGrantsFromTokenableSkipsMissingGrants(): void
+    {
+        $client = Client::factory()->create();
+
+        PassportScopeResource::factory()->create(['name' => 'users']);
+        PassportScopeAction::factory()->create(['name' => 'read']);
+
+        $this->service->revokeGrantsFromTokenable($client, ['users:read']);
+
+        self::assertCount(
+            0,
             PassportScopeGrant::where('tokenable_id', $client->getKey())->get()
         );
     }
