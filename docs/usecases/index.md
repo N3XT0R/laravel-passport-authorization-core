@@ -21,20 +21,18 @@ a single application-level operation and is intended to be called from controlle
 
 ### Client Use Cases
 
-| Use case                                         | Description                                                                            |
-|--------------------------------------------------|----------------------------------------------------------------------------------------|
-| [ClearCacheUseCase](clear-cache-use-case.md)     | Clears the scope registry cache.                                                       |
-| [CleanUpUseCase](clean-up-use-case.md)           | Removes orphaned scope grants.                                                         |
-| [CreateClientUseCase](create-client-use-case.md) | Creates an OAuth client, assigns grants, and returns the client plus its plain secret. |
-| [EditClientUseCase](edit-client-use-case.md)     | Updates an OAuth client, updates grants, and optionally emits a revoke event.          |
-| [DeleteClientUseCase](delete-client-use-case.md) | Deletes an OAuth client and its scope grants.                                          |
+| Use case                                                | Description                                                                            |
+|---------------------------------------------------------|----------------------------------------------------------------------------------------|
+| [CreateClientUseCase](client/create-client-use-case.md) | Creates an OAuth client, assigns grants, and returns the client plus its plain secret. |
+| [EditClientUseCase](client/edit-client-use-case.md)     | Updates an OAuth client, updates grants, and optionally emits a revoke event.          |
+| [DeleteClientUseCase](client/delete-client-use-case.md) | Deletes an OAuth client and its scope grants.                                          |
 
 ### Cache/CleanUp Use Cases
 
-| Use case                                     | Description                      |
-|----------------------------------------------|----------------------------------|
-| [ClearCacheUseCase](clear-cache-use-case.md) | Clears the scope registry cache. |
-| [CleanUpUseCase](clean-up-use-case.md)       | Removes orphaned scope grants.   |
+| Use case                                             | Description                      |
+|------------------------------------------------------|----------------------------------|
+| [ClearCacheUseCase](cleanup/clear-cache-use-case.md) | Clears the scope registry cache. |
+| [CleanUpUseCase](cleanup/clean-up-use-case.md)       | Removes orphaned scope grants.   |
 
 ### Tokenable Use Cases
 
