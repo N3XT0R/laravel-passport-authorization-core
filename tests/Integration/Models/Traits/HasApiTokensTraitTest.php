@@ -9,6 +9,7 @@ use Laravel\Passport\AccessToken;
 use N3XT0R\LaravelPassportAuthorizationCore\Database\Factories\PassportScopeActionFactory;
 use N3XT0R\LaravelPassportAuthorizationCore\Database\Factories\PassportScopeGrantFactory;
 use N3XT0R\LaravelPassportAuthorizationCore\Database\Factories\PassportScopeResourceFactory;
+use N3XT0R\LaravelPassportAuthorizationCore\Models\Passport\Client;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeAction;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeResource;
 use N3XT0R\LaravelPassportAuthorizationCore\Services\GrantService;
@@ -68,6 +69,52 @@ class HasApiTokensTraitTest extends DatabaseTestCase
         $user->withAccessToken($accessToken);
 
         $this->assertTrue($user->tokenCan($this->scope));
+    }
+
+    public function testTokenCanReturnsTrueWhenTokenHasGrantWithContextClient(): void
+    {
+        $user = HasApiTokensUser::factory()->create();
+        $contextClient = Client::factory()->create();
+
+        PassportScopeGrantFactory::new()
+            ->withTokenable($user)
+            ->create([
+                'resource_id' => $this->resource->getKey(),
+                'action_id' => $this->action->getKey(),
+                'context_client_id' => $contextClient->getKey(),
+            ]);
+
+        $accessToken = new AccessToken([
+            'oauth_scopes' => [$this->scope],
+            'oauth_client_id' => $contextClient->getKey(),
+        ]);
+
+        $user->withAccessToken($accessToken);
+
+        $this->assertTrue($user->tokenCan($this->scope));
+    }
+
+    public function testTokenCanReturnsFalseWhenTokenHasGrantWithContextClient(): void
+    {
+        $user = HasApiTokensUser::factory()->create();
+        $contextClient = Client::factory()->create();
+
+        PassportScopeGrantFactory::new()
+            ->withTokenable($user)
+            ->create([
+                'resource_id' => $this->resource->getKey(),
+                'action_id' => $this->action->getKey(),
+                'context_client_id' => Client::factory()->create()->getKey(),
+            ]);
+
+        $accessToken = new AccessToken([
+            'oauth_scopes' => [$this->scope],
+            'oauth_client_id' => $contextClient->getKey(),
+        ]);
+
+        $user->withAccessToken($accessToken);
+
+        $this->assertFalse($user->tokenCan($this->scope));
     }
 
     public function testTokenCanReturnsFalseWhenScopeMissingOnToken(): void
