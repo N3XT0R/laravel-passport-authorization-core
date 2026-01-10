@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace N3XT0R\LaravelPassportAuthorizationCore\Application\UseCases\Tokenables;
 
 use Illuminate\Contracts\Auth\Authenticatable;
+use N3XT0R\LaravelPassportAuthorizationCore\Events\Tokenable\TokenableGrantsAssignedEvent;
 use N3XT0R\LaravelPassportAuthorizationCore\Exceptions\Domain\ActiveClientNotExistsException;
 use N3XT0R\LaravelPassportAuthorizationCore\Exceptions\Domain\Owners\OwnerNotExistsException;
 use N3XT0R\LaravelPassportAuthorizationCore\Exceptions\Domain\Tokenables\IsNotGrantableException;
@@ -50,6 +51,13 @@ readonly class AssignGrantsToTokenableUseCase
             scopes: $scopes,
             actor: $actor,
             contextClient: $client
+        );
+
+        TokenableGrantsAssignedEvent::dispatch(
+            model: $owner,
+            scopes: $scopes,
+            contextClient: $client,
+            actor: $actor
         );
     }
 }
