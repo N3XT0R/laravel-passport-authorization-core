@@ -209,7 +209,7 @@ class ScopeGrantRepository
 
     /**
      * Get all scope grants.
-     * @return Collection
+     * @return Collection<PassportScopeGrant>
      */
     public function getAllGrants(): Collection
     {
@@ -224,7 +224,7 @@ class ScopeGrantRepository
     /**
      * Get all grants for a given tokenable model.
      * @param HasPassportScopeGrantsInterface $tokenable
-     * @return Collection
+     * @return Collection<PassportScopeGrant>
      */
     public function getGrantsForTokenable(HasPassportScopeGrantsInterface $tokenable): Collection
     {
