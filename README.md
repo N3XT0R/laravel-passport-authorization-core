@@ -8,7 +8,7 @@
 [![Code Coverage](https://qlty.sh/gh/N3XT0R/projects/laravel-passport-authorization-core/coverage.svg)](https://qlty.sh/gh/N3XT0R/projects/laravel-passport-authorization-core)
 ![Framework Agnostic Domain Layer](https://img.shields.io/badge/architecture-domain--core-blue?style=flat-square)
 ![OAuth2 / Passport Compatible](https://img.shields.io/badge/oauth2-laravel%20passport-blue?style=flat-square)
-
+[![Total Downloads](https://img.shields.io/packagist/dt/n3xt0r/laravel-passport-authorization-core.svg?style=flat-square)](https://packagist.org/packages/n3xt0r/laravel-passport-authorization-core)
 ---
 
 ## Overview
