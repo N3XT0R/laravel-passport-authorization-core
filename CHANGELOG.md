@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2025-01-10
+
 ### Added
 
 - Added `context_client_id` column to the `passport_scope_grants` table to explicitly
