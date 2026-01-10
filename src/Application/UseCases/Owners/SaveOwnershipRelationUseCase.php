@@ -15,6 +15,7 @@ use N3XT0R\LaravelPassportAuthorizationCore\Services\ClientService;
 
 /**
  * Use case to save ownership relation between client and owner
+ * @note on change of owner, all scope grants for previous owner are deleted
  */
 readonly class SaveOwnershipRelationUseCase
 {
