@@ -36,11 +36,11 @@ a single application-level operation and is intended to be called from controlle
 
 ### Tokenable Use Cases
 
-| Use case                                                                     | Description                                                          |
-|------------------------------------------------------------------------------|----------------------------------------------------------------------|
-| [AssignGrantsToTokenableUseCase](assign-grants-to-tokenable-use-case.md)     | Assigns scope grants to a tokenable for a specific client context.   |
-| [RevokeGrantsFromTokenableUseCase](revoke-grants-from-tokenable-use-case.md) | Revokes scope grants from a tokenable for a specific client context. |
-| [UpsertGrantsForTokenableUseCase](upsert-grants-for-tokenable-use-case.md)   | Upserts scope grants for a tokenable for a specific client context.  |
+| Use case                                                                               | Description                                                          |
+|----------------------------------------------------------------------------------------|----------------------------------------------------------------------|
+| [AssignGrantsToTokenableUseCase](tokenable/assign-grants-to-tokenable-use-case.md)     | Assigns scope grants to a tokenable for a specific client context.   |
+| [RevokeGrantsFromTokenableUseCase](tokenable/revoke-grants-from-tokenable-use-case.md) | Revokes scope grants from a tokenable for a specific client context. |
+| [UpsertGrantsForTokenableUseCase](tokenable/upsert-grants-for-tokenable-use-case.md)   | Upserts scope grants for a tokenable for a specific client context.  |
 
 ### Other Use Cases
 
