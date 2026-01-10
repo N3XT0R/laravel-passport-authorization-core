@@ -76,7 +76,6 @@ class RepositoryRegistrar extends BaseRegistrar
         if (
             !$useCache
             || defined('TESTBENCH_CORE')
-            || $this->app->environment('testing')
         ) {
             return $repository;
         }
