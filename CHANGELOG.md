@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed wrong normalization on `PassportScopeGrant::toScopeString` incorrect scope strings like `resource.` instead of
+  `resource:`.
+
 ## [1.1.0] - 2025-01-09
 
 ### Changed
