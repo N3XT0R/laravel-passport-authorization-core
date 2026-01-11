@@ -37,7 +37,8 @@
     "autoload": {
         "psr-4": {
             "N3XT0R\\LaravelPassportAuthorizationCore\\": "src/",
-            "N3XT0R\\LaravelPassportAuthorizationCore\\Database\\Factories\\": "database/factories/"
+            "N3XT0R\\LaravelPassportAuthorizationCore\\Database\\Factories\\": "database/factories/",
+            "N3XT0R\\LaravelPassportAuthorizationCore\\Database\\Seeders\\": "database/Seeders/"
         }
     },
     "autoload-dev": {

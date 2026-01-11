@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.1] - 2025-01-11
+
+### Fixed
+
+- Added missing Composer autoload namespace for package database seeders.
+
 ## [1.2.0] - 2025-01-10
 
 ### Added
