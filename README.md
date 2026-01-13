@@ -14,8 +14,8 @@
 
 ## Overview
 
-**Laravel Passport Authorization Core** provides a **domain model and use cases** for attribute-based access control (
-ABAC) on top of Laravel Passport.
+**Laravel Passport Authorization Core** provides a **domain model and use cases** for structured access control on top
+of Laravel Passport.
 
 Instead of implicit authorization scattered across your codebase, it offers an explicit permission model: **resources
 ** (user, invoice, report) + **actions** (read, create, delete) stored in the database as queryable facts. You implement
@@ -47,13 +47,64 @@ Single source of truth. No opinions about how you validate.
 
 ## How It Works
 
-1. Define Resources and Actions
-2. Assign Permissions (Grants) to Users, Clients, Service Accounts
-3. Enforce Permissions in Your Application Logic
+### 1. Define Resources and Actions
+
+```php
+// Global actions (apply to any resource)
+$readAction = Action::firstOrCreate(['name' => 'read']);
+$createAction = Action::firstOrCreate(['name' => 'create']);
+
+// Resources
+$userResource = Resource::firstOrCreate(['name' => 'user']);
+$invoiceResource = Resource::firstOrCreate(['name' => 'invoice']);
+
+// Resource-specific actions (invoice only)
+$exportAction = Action::firstOrCreate([
+    'name' => 'export',
+    'resource_id' => $invoiceResource->id
+]);
+```
+
+### 2. Assign Permissions (Use Cases)
+
+```php
+$grant = app(GrantPermissionUseCase::class);
+
+// User 5 can read users
+$grant->execute(
+    tokenableType: User::class,
+    tokenableId: 5,
+    resourceId: $userResource->id,
+    actionId: $readAction->id
+);
+
+// Client 3 can create invoices
+$grant->execute(
+    tokenableType: Client::class,
+    tokenableId: 3,
+    resourceId: $invoiceResource->id,
+    actionId: $createAction->id
+);
+```
+
+### 3. Query & Enforce
+
+```php
+// Query permissions (single source of truth)
+$check = app(CheckPermissionUseCase::class);
+$hasPermission = $check->execute(User::class, 5, $userResource->id, $readAction->id);
+
+// Enforce however you want
+Route::post('/users', function () {
+    if (!$check->execute(User::class, auth()->id(), 'user', 'create')) {
+        abort(403);
+    }
+});
+```
 
 ---
 
-## Key Concepts
+
 
 **Resources:** Entities needing permission control (user, invoice, report, etc.)
 
@@ -72,7 +123,7 @@ Single source of truth. No opinions about how you validate.
 
 ## What This Package Does
 
-- Domain model for ABAC authorization
+- Domain model for structured access control
 - Use cases for managing permissions
 - Polymorphic grant storage (User, Client, ServiceAccount, custom entities)
 - Single source of truth for permissions
