@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.2] - 2025-01-13
+
+## Fixed
+
+- Fixed uniqueness constraint on the `passport_scope_grants` table by including `context_client_id` in the unique
+  index.  
+  This prevents collisions when identical scope grants are assigned in different client contexts.
+
 ## [1.2.1] - 2025-01-11
 
 ### Fixed
