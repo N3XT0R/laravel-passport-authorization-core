@@ -312,7 +312,7 @@ readonly class GrantService
         ?Authenticatable $actor = null,
         ?Client $contextClient = null,
     ): void {
-        $existingGrants = $this->getTokenableGrantsAsScopes($tokenable)->toArray();
+        $existingGrants = $this->getTokenableGrantsAsScopes($tokenable, $contextClient)->toArray();
 
         $scopesToRevoke = array_diff($existingGrants, $scopes);
         $scopesToGrant = array_diff($scopes, $existingGrants);
