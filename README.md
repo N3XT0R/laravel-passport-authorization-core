@@ -120,7 +120,7 @@ php artisan vendor:publish --tag=passport-authorization-core-config
 
 - Permissions are explicit database facts, not implicit configuration
 - Authorization context is deterministic and queryable
-- Full audit trail when paired with activity logging
+- Full audit trail via activity logging
 - Supports ISO 27001 and similar compliance requirements
 
 ---
