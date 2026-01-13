@@ -48,8 +48,8 @@ Single source of truth. No opinions about how you validate.
 ## How It Works
 
 1. Define Resources and Actions
-3. Query & manage Grants via Use Cases
-4. Implement enforcement in your app (middleware, policies, etc.)
+2. Query & manage Grants via Use Cases
+3. Implement enforcement in your app (middleware, policies, etc.)
 
 ---
 
