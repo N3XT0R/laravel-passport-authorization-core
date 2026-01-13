@@ -112,7 +112,6 @@ php artisan vendor:publish --tag=passport-authorization-core-config
 - **[Usage](docs/usage.md)** – Working with resources, actions, and use cases
 - **[Usecase Overview](docs/usecases/index.md)** – Complete reference of available use cases
 - **[Configuration](docs/configuration.md)** – Custom Passport models, extensibility
-- **[Enforcement Patterns](docs/enforcement.md)** – How to implement authorization in your app
 
 ---
 
