@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.4] - 2025-01-13
+
+## Fixed
+
+- fixed missing contextClientId assignment in GrantableTokenableResolver when resolving from a Tokenable model.
+
 ## [1.2.3] - 2025-01-13
 
 ## Fixed
