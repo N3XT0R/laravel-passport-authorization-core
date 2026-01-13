@@ -47,60 +47,9 @@ Single source of truth. No opinions about how you validate.
 
 ## How It Works
 
-### 1. Define Resources and Actions
-
-```php
-// Global actions (apply to any resource)
-$readAction = Action::firstOrCreate(['name' => 'read']);
-$createAction = Action::firstOrCreate(['name' => 'create']);
-
-// Resources
-$userResource = Resource::firstOrCreate(['name' => 'user']);
-$invoiceResource = Resource::firstOrCreate(['name' => 'invoice']);
-
-// Resource-specific actions (invoice only)
-$exportAction = Action::firstOrCreate([
-    'name' => 'export',
-    'resource_id' => $invoiceResource->id
-]);
-```
-
-### 2. Assign Permissions (Use Cases)
-
-```php
-$grant = app(GrantPermissionUseCase::class);
-
-// User 5 can read users
-$grant->execute(
-    tokenableType: User::class,
-    tokenableId: 5,
-    resourceId: $userResource->id,
-    actionId: $readAction->id
-);
-
-// Client 3 can create invoices
-$grant->execute(
-    tokenableType: Client::class,
-    tokenableId: 3,
-    resourceId: $invoiceResource->id,
-    actionId: $createAction->id
-);
-```
-
-### 3. Query & Enforce
-
-```php
-// Query permissions (single source of truth)
-$check = app(CheckPermissionUseCase::class);
-$hasPermission = $check->execute(User::class, 5, $userResource->id, $readAction->id);
-
-// Enforce however you want
-Route::post('/users', function () {
-    if (!$check->execute(User::class, auth()->id(), 'user', 'create')) {
-        abort(403);
-    }
-});
-```
+1. Define Resources and Actions
+3. Query & manage Grants via Use Cases
+4. Implement enforcement in your app (middleware, policies, etc.)
 
 ---
 
