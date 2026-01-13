@@ -13,124 +13,233 @@
 
 ## Overview
 
-**Laravel Passport Authorization Core** provides a **domain-oriented authorization model** on top of
-**Laravel Passport**.
+**Laravel Passport Authorization Core** replaces implicit, scattered OAuth authorization with a **structured,
+database-backed permission model**.
 
-It defines **structured concepts** for scopes, permissions, grants, and authorization context **without any UI, admin
-panel, or framework-specific assumptions** beyond Laravel itself.
+Instead of generic scopes floating around as strings, it enables you to define explicit permissions as **resource +
+action** combinations (e.g., `user:read`, `invoice:delete`) and store them in the database. You then extend Passport's
+`tokenCan()` and `hasScope()` methods to check these structured permissions at runtime.
 
-This package is intended to serve as a **reusable foundation** for:
-
-- administrative UIs (e.g. Filament, custom dashboards)
-- API-level authorization enforcement
-- policy-driven access control
-- audit-aware security architectures
-
-It does **not** implement OAuth flows and does **not** replace Passport.  
-Passport remains the runtime authority for token issuance and validation.
+The result: clear, auditable, fine-grained authorization that lives in your database, not in middleware magic or
+configuration files.
 
 ---
 
-## What this package does
+## The Problem It Solves
 
-This package introduces a **formal domain layer** for Passport-based authorization:
+### Without This Package
 
-- Defines a **structured scope model** (instead of free-form strings)
-- Encapsulates authorization intent as **resource + action**
-- Provides reusable logic for reasoning about permissions and grants
-- Centralizes authorization-related domain rules
-- Exposes a stable API for UI layers and enforcement layers alike
+Typical Passport setups have scattered, implicit authorization:
 
-All logic operates **above Passport**, never inside it.
+- **Scopes are strings without structure:** `'users:read'` and `'users:read-all'` mean different things but look the
+  same
+- **No central source of truth:** Permissions are defined in middleware, policies, configuration, and CLI commands
+- **Hard to manage:** Who has what permission? No systematic way to answer that question
+- **Impossible to audit:** Authorization decisions are hidden. You can't review what a client can actually do without
+  reading code
+- **No database visibility:** Permissions exist in code or config, not queryable data
+- **Manual governance:** Changing permissions requires code or CLI commands, no UI
+
+Example: A Dropbox integration client has scopes defined via CLI. Nobody knows the exact permissions. Revoking requires
+manual intervention. Auditing what it accessed requires parsing logs.
+
+### With This Package
+
+Authorization becomes explicit and database-driven:
+
+- **Structured permissions:** Resources (`user`, `invoice`, `report`) + actions (`read`, `create`, `delete`, `update`,
+  `list`) stored in the database
+- **Single source of truth:** Permissions are queryable, not scattered across code
+- **Clear governance:** Every permission is explicit, trackable, and can be reviewed in one place
+- **Auditable by design:** Who has what permission is a database query, not a mystery
+- **Runtime-ready:** Extended `tokenCan()` and `hasScope()` check the database, not guessing
+- **UI-friendly:** Permissions can be managed through an admin interface (e.g., Filament Passport UI)
+
+Example: The same Dropbox client has permissions explicitly stored: `files:read`, `files:write`. You can see exactly
+what it can do, change permissions with a click, and audit who did what when.
+
+---
+
+## How It Works
+
+### Permission Model
+
+A permission is a **resource + action** combination:
+
+```
+Resource: "user"
+Action: "read"
+Permission: user:read
+```
+
+Permissions are stored explicitly in the database for each client or user.
+
+### Runtime Checks
+
+You extend Passport's token validation methods to check these database permissions:
+
+```php
+// Instead of generic scope checking:
+// $token->can('users:read')
+
+// You check structured permissions:
+// Does this token have user:read permission?
+$token->can('user', 'read')
+```
+
+The package provides the domain logic and API to make this work. You define the resources and actions that matter in
+your application.
+
+### Database-Backed
+
+Permissions are not in configuration or code—they're in the database:
+
+- Clear visibility: Query which permissions a client has
+- Easy management: UI can assign/revoke permissions
+- Auditable: Track who changed what permission when
+- Flexible: Add new resources and actions without code changes
+
+---
+
+## Real-World Example: How Enterprise Platforms Do It
+
+### GitHub OAuth Scopes (App-Level)
+
+GitHub lets you grant broad capabilities:
+
+- `repo:read` – read repositories
+- `user:email` – access emails
+
+But you can't say "read only repo X, not Y". It's coarse-grained.
+
+### AWS IAM (Fine-Grained Resource Control)
+
+AWS lets you specify exact permissions:
+
+```json
+{
+    "Resource": "arn:aws:s3:::my-bucket/uploads/*",
+    "Action": [
+        "s3:GetObject",
+        "s3:PutObject"
+    ],
+    "Effect": "Allow"
+}
+```
+
+This says: "For this S3 bucket's uploads folder, allow read and write. Nothing else."
+
+### This Package: The Middle Ground
+
+You define resources and actions that matter to your app:
+
+```
+Resources: user, invoice, report, settings
+Actions: list, read, create, update, delete
+
+Permissions (stored in DB):
+- Client A: user:read, invoice:read, invoice:create
+- Client B: report:read, report:export
+- User X: settings:update
+```
+
+Clear, queryable, auditable. Not as fine-grained as AWS, but way more structured than generic scopes.
 
 ---
 
 ## Core Concepts
 
-### Structured Scopes
+### Resources
 
-Instead of treating scopes as arbitrary strings, this package models them explicitly:
+Entities in your system that need permission control:
 
-- Scopes represent **intent**, not implementation
-- Typical structure:  
-  `resource:action` (e.g. `users:read`, `orders:write`)
-- Enables:
-    - consistent naming
-    - reasoning about permissions
-    - grouping and documentation
-    - safer long-term evolution
+- `user`
+- `invoice`
+- `report`
+- `settings`
+- etc.
 
-### Authorization Context
+### Actions
 
-Authorization is modeled as a **contextual decision**, not a hardcoded rule:
+Operations you want to control:
 
-- Which client?
-- Which grant type?
-- Which scopes?
-- Which actor (user / machine)?
-- Which resource and action?
+- `list` – view a collection
+- `read` – view a specific item
+- `create` – create a new item
+- `update` – modify an item
+- `delete` – remove an item
 
-This context can be:
+### Permissions
 
-- inspected
-- logged
-- audited
-- reused across UI and runtime enforcement
+The combination of resource + action, stored in the database:
 
-### Passport Compatibility
+- `user:read`
+- `invoice:create`
+- `report:delete`
 
-- Uses Passport’s existing tables and models
-- Does not alter token issuance, validation, or guards
-- Works with default or custom Passport models
-- Can be adopted incrementally
+### Token Authorization
 
----
+Extended Passport methods check permissions at runtime:
 
-## What this package does *not* do
+```php
+// Check if a token has a specific resource:action permission
+if ($token->can('user', 'read')) {
+    // Allow access
+}
 
-- ❌ No OAuth flow implementation
-- ❌ No token issuance logic
-- ❌ No UI or admin panel
-- ❌ No policy enforcement by itself
-- ❌ No assumptions about application architecture
-
-This package **defines structure and intent**  enforcement remains the responsibility of the application.
+// Enhanced hasScope() for structured permissions
+if ($request->user('api')->hasScope('invoice:create')) {
+    // Allow action
+}
+```
 
 ---
 
-## Why this exists
+## What This Package Does
 
-Laravel Passport deliberately avoids opinions about **authorization modeling** and **governance**.
-
-In larger or long-lived systems this often leads to:
-
-- Scopes as undocumented strings
-- No shared understanding of permissions
-- UI layers re-implementing domain logic
-- Authorization rules scattered across policies, middleware, and services
-
-**Laravel Passport Authorization Core** provides a **single, explicit domain model** that can be reused everywhere.
-
-It enables:
-
-- a shared mental model across teams
-- clearer security reviews
-- safer refactoring
-- UI and runtime layers built on the same foundation
+- Defines a **domain model** for resource-based permissions (not generic scopes)
+- Provides a **stable API** for checking permissions against the database
+- Enables **extended Passport validation methods** (`tokenCan()`, `hasScope()`)
+- Centralizes permission logic so UI and runtime enforcement use the same model
+- Supports explicit, auditable permission assignment
 
 ---
 
-## Typical Usage
+## What This Package Does NOT Do
 
-This package is designed to be consumed by:
+- Implement OAuth flows
+- Replace Passport or modify token issuance/validation internals
+- Enforce permissions by itself (you decide where to check)
+- Make assumptions about your application architecture
+- Provide UI or admin panels
 
-- admin interfaces (e.g. Filament Passport UI)
-- API gateways
-- policy layers
-- background services
-- audit and compliance tooling
+You decide how and where to enforce permissions. This package defines the model and provides the tools.
 
-It acts as the **authorization backbone**, not the presentation layer.
+---
+
+## Typical Consumers
+
+This package is designed to be used by:
+
+- **Admin interfaces:** Filament Passport UI for managing client and user permissions
+- **API guards:** Middleware and route-level checks that verify token permissions
+- **Controllers:** Authorization checks before processing requests
+- **Policy classes:** Laravel's native authorization patterns backed by database permissions
+- **Audit systems:** Logging what permissions were checked and granted
+- **Background jobs:** Permission checks for async task execution
+
+---
+
+## Core Features
+
+- **Resource + action permission model** (not generic scopes)
+- **Database-backed permissions** (queryable, auditable, visible)
+- **Extended Passport methods** for structured permission checking
+- **Explicit permission assignment** per client or user
+- **Single source of truth** for authorization across your application
+- **Support for custom Passport models**
+- **Clear separation between domain logic and enforcement**
+- **Foundation for compliance and governance workflows**
 
 ---
 
@@ -158,65 +267,51 @@ php artisan vendor:publish --tag=passport-authorization-core-config
 
 ## Documentation
 
-Detailed documentation for **Laravel Passport Authorization Core** is available in the `docs/` directory.
+Detailed documentation is available in the `docs/` directory:
 
-Start here:
+- **[Usage](docs/usage.md)** – How to define resources, actions, and check permissions
+- **[Usecase Overview](docs/usecases/index.md)** – Complete reference of available patterns and integration scenarios
+- **[Configuration](docs/configuration.md)** – Optional configuration, model mappings, and extensibility
 
-- **[Usage](docs/usage.md)**  
-  How to use the package correctly via the Application / Usecase layer.
-
-- **[Usecase Overview](docs/usecases/index.md)**  
-  A structured overview of all available application use cases, including their intent and integration scenarios.
-
-- **[Configuration](docs/configuration.md)**  
-  Optional configuration, model mappings, and integration details.
-
-The documentation is intentionally structured to reflect the package architecture.  
-Consumers are expected to familiarize themselves with the **use case–driven interaction model** before integrating the
-package into application code.
+Documentation reflects the package architecture. Start with Usage to understand the permission model and API.
 
 ---
 
 ## Configuration & Extensibility
 
-- Supports default and custom Passport models
-- Designed for extension via:
-    - custom scope providers
-    - domain services
-    - application-specific authorization rules
-- No hard coupling to a specific UI or workflow
+- Define custom resources and actions for your application
+- Extend Passport's validation methods with your permission logic
+- Support for custom Passport models
+- No hard coupling to specific patterns or workflows
+- Designed for incremental adoption alongside existing Passport implementations
 
 ---
 
-## Audit & Compliance Considerations
+## Audit & Compliance
 
 This package is **audit-friendly by design**:
 
-- Explicit authorization concepts
-- Clear separation of concerns
-- Deterministic permission modeling
+- Permissions are explicit and stored in the database
+- Every permission assignment is a queryable fact, not implicit configuration
+- Authorization context (resource, action, token) is deterministic and traceable
+- Pair with activity logging for complete audit trails
 
-It can be combined with logging or audit libraries (e.g. activity logging) but does not enforce a specific solution.
-
-> Note: Compliance certifications apply to organizations and processes.  
-> This package supports auditability but does not constitute compliance by itself.
+> Note: Compliance certifications are organization-specific. This package enables the structured, auditable permission
+> model required for compliance; it does not constitute compliance by itself.
 
 ---
 
 ## Relationship to Filament Passport UI
 
-This package serves as the **domain core** for:
+This package serves as the **domain core** for [Filament Passport UI](https://github.com/N3XT0R/filament-passport-ui):
 
-https://github.com/N3XT0R/filament-passport-ui
-
-- All non-UI authorization logic lives here
-- Filament Passport UI focuses purely on administration and presentation
-- Both packages evolve independently with a stable boundary
+- All permission logic and validation lives here
+- Filament Passport UI provides the administrative interface for assigning permissions
+- Both packages evolve independently with a stable boundary between domain and UI
 
 ---
 
 ## Status
 
-This package is under active development and considered **foundational infrastructure**.
-
-Architectural discussion, feedback, and contributions are welcome.
+Actively developed and considered foundational infrastructure. Architectural feedback, issues, and contributions
+welcome.
