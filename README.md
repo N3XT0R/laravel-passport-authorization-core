@@ -57,8 +57,8 @@ Single source of truth. No opinions about how you validate.
 
 **Resources:** Entities needing permission control (user, invoice, report, etc.)
 
-**Actions:** Operations you control. Global (`list`, `read`, `create`, `update`, `delete`) or resource-specific (
-`export`, `approve`).
+**Actions:** Operations you control. Global (`list`, `read`, `create`, `update`, `delete`) or resource-specific
+(`export`, `approve`).
 
 **Grants:** Permissions assigned to any `OAuthenticatable` entity (User, Client, ServiceAccount, or custom).
 
@@ -121,7 +121,7 @@ php artisan vendor:publish --tag=passport-authorization-core-config
 - Permissions are explicit database facts, not implicit configuration
 - Authorization context is deterministic and queryable
 - Full audit trail via activity logging
-- Supports ISO 27001 and similar compliance requirements
+- Supports auditability requirements commonly found in ISO 27001–aligned systems.
 
 ---
 
