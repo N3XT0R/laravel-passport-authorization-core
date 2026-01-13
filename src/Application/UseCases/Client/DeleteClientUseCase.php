@@ -23,7 +23,7 @@ readonly class DeleteClientUseCase
 
     public function execute(Client $client, ?Authenticatable $actor = null): bool
     {
-        $this->scopeGrantRepository->deleteAllGrantsForTokenable($client);
+        $this->scopeGrantRepository->deleteAllGrantsForTokenable($client, $client->getKey());
         $result = $this->clientService->deleteClient($client, $actor);
         OauthClientDeletedEvent::dispatch($client, $actor);
 
