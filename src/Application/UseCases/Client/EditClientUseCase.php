@@ -67,7 +67,8 @@ readonly class EditClientUseCase
         $this->grantService->upsertGrantsForTokenable(
             tokenable: $client,
             scopes: $scopes,
-            actor: $actor
+            actor: $actor,
+            contextClient: $client
         );
 
         return $client;
