@@ -38,7 +38,7 @@ Typical Passport setups have scattered, implicit authorization:
 - **Impossible to audit:** Authorization decisions are hidden. You can't review what a client can actually do without
   reading code
 - **No database visibility:** Permissions exist in code or config, not queryable data
-- **Manual governance:** Changing permissions requires code or CLI commands, no UI
+- **Manual governance:** Changing permissions requires code changes or manual CLI steps
 
 Example: A Dropbox integration client has scopes defined via CLI. Nobody knows the exact permissions. Revoking requires
 manual intervention. Auditing what it accessed requires parsing logs.
