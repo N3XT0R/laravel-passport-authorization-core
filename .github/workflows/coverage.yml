@@ -18,10 +18,12 @@ jobs:
         stability: [ prefer-stable ]
         include:
           - laravel: 12.*
+            laravel_label: 12
             testbench: 10.*
             carbon: 3.*
             collision: 8.*
           - laravel: 13.*
+            laravel_label: 13
             testbench: 11.*
             carbon: 3.*
             collision: 8.*
@@ -58,13 +60,13 @@ jobs:
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v7
         with:
-          name: clover-coverage-${{ matrix.laravel }}-${{ matrix.php }}
+          name: clover-coverage-${{ matrix.laravel_label }}-${{ matrix.php }}
           path: coverage/clover.xml
 
       - name: Upload HTML coverage report
         uses: actions/upload-artifact@v7
         with:
-          name: coverage-report-${{ matrix.laravel }}-${{ matrix.php }}
+          name: coverage-report-${{ matrix.laravel_label }}-${{ matrix.php }}
           path: report/
 
       - name: Send coverage to Qlty
