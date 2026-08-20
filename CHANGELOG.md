@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.1] - 2025-08-20
+
 ### Fixed
 
 - `add_client_id_to_passport_scope_grants_table` migration used `foreignId('context_client_id')` (bigint), which mismatches `oauth_clients.id` on Passport 13+ where client IDs are UUIDs by default (`Passport::$clientUuids = true`). The foreign key constraint could never be created against a real database (`SQLSTATE[HY000]: 1005 errno 150`), even though SQLite-based tests did not catch it. Changed to `foreignUuid('context_client_id')` to match.
