@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.2] - 2025-08-20
+
 ### Fixed
 
 - `ResourceRepository::isMigrated()` and `ActionRepository::isMigrated()` threw instead of returning `false` when the database itself was unreachable (e.g. no database file yet on a fresh install/CI run before migrations). Since `ScopeBooter::boot()` calls this unconditionally on every application boot (not just when scopes are actually used), any command — including `composer install`'s `package:discover` — would crash before the database was ever migrated. Both repositories now catch the failure and report `false`, consistent with "not migrated yet".
