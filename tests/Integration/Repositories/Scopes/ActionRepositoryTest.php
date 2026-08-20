@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace N3XT0R\LaravelPassportAuthorizationCore\Tests\Integration\Repositories\Scopes;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeAction;
 use N3XT0R\LaravelPassportAuthorizationCore\Repositories\Scopes\ActionRepository;
 use N3XT0R\LaravelPassportAuthorizationCore\Tests\DatabaseTestCase;
@@ -69,6 +70,16 @@ final class ActionRepositoryTest extends DatabaseTestCase
     public function testIsMigratedReturnsTrueWhenTableExists(): void
     {
         self::assertTrue(
+            $this->actionRepository->isMigrated()
+        );
+    }
+
+    public function testIsMigratedReturnsFalseWhenDatabaseIsUnreachable(): void
+    {
+        config(['database.connections.testing.database' => '/nonexistent/path/does-not-exist.sqlite']);
+        DB::purge('testing');
+
+        self::assertFalse(
             $this->actionRepository->isMigrated()
         );
     }

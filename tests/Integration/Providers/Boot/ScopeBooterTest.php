@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N3XT0R\LaravelPassportAuthorizationCore\Tests\Integration\Providers\Boot;
 
+use Illuminate\Support\Facades\DB;
 use Laravel\Passport\Passport;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeAction;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeResource;
@@ -33,6 +34,17 @@ final class ScopeBooterTest extends DatabaseTestCase
     public function testItDoesNothingWhenScopesAreNotMigrated(): void
     {
         config(['passport-authorization-core.use_database_scopes' => true]);
+
+        $this->app->make(ScopeBooter::class)->boot();
+
+        self::assertTrue(Passport::scopes()->isEmpty());
+    }
+
+    public function testItDoesNothingWhenDatabaseIsUnreachable(): void
+    {
+        config(['passport-authorization-core.use_database_scopes' => true]);
+        config(['database.connections.testing.database' => '/nonexistent/path/does-not-exist.sqlite']);
+        DB::purge('testing');
 
         $this->app->make(ScopeBooter::class)->boot();
 

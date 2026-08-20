@@ -45,11 +45,19 @@ class ActionRepository implements ActionRepositoryContract
 
     /**
      * Check if the scope actions table is migrated.
+     *
+     * Returns false instead of throwing when the database itself is not
+     * reachable (e.g. no database file yet on a fresh install), since
+     * this is queried unconditionally on every application boot.
      * @return bool
      */
     public function isMigrated(): bool
     {
-        return Schema::hasTable('passport_scope_actions');
+        try {
+            return Schema::hasTable('passport_scope_actions');
+        } catch (\Throwable) {
+            return false;
+        }
     }
 
     /**

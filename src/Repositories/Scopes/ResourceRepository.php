@@ -48,9 +48,21 @@ class ResourceRepository implements ResourceRepositoryContract
             ->first();
     }
 
+    /**
+     * Check if the scope resources table is migrated.
+     *
+     * Returns false instead of throwing when the database itself is not
+     * reachable (e.g. no database file yet on a fresh install), since
+     * this is queried unconditionally on every application boot.
+     * @return bool
+     */
     public function isMigrated(): bool
     {
-        return Schema::hasTable('passport_scope_resources');
+        try {
+            return Schema::hasTable('passport_scope_resources');
+        } catch (\Throwable) {
+            return false;
+        }
     }
 
     public function createResource(array $data): PassportScopeResource
