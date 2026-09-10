@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Added a `fix_passport_scope_grants_context_client_id_type` repair migration for databases that
+  already ran the pre-1.3.1 `add_client_id_to_passport_scope_grants_table`. The 1.3.1 fix only
+  corrected the migration source; a migration that has already run never runs again, so those
+  databases kept `context_client_id` as a bigint. Writing a client UUID into it fails on
+  MySQL/MariaDB with `1265 Data truncated for column 'context_client_id'`, which aborts every
+  OAuth client creation before the generated secret can be shown. The repair drops and recreates
+  the column as `foreignUuid` (MariaDB refuses to cast bigint to its native uuid type), restores
+  the foreign key and both indexes, and is a no-op where the column is already correct.
+
 ## [1.3.2] - 2026-08-20
 
 ### Fixed
